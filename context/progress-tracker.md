@@ -4,11 +4,11 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Complete
+In progress
 
 ## Current Goal
 
-- Move on to the homepage store grid after the hero slice
+- Implement the landing page stats section exactly as specified in `03-landingpage-stats.md`
 
 ## Completed
 
@@ -18,7 +18,7 @@ Complete
 
 ## In Progress
 
-- None
+- Landing page stats section
 
 ## Next Up
 
@@ -32,6 +32,7 @@ Complete
 
 - Header is implemented as a standalone landing-page component and rendered from the homepage
 - Hero is implemented as a standalone landing-page component and rendered below the header
+- Stats section is implemented as a standalone landing-page component and rendered below the hero
 
 ## Session Notes
 

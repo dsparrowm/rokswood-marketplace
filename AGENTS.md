@@ -8,6 +8,18 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ## Approach
 
+Read the following files in order before implementing or making any architectural decisions
+
+1.`context/project-overview.md` - product definitions, goals, features, and scope
+2. `context/architecture.md` - system structure, boundaries and invariants
+3. `context/ui-context.md` - theme, colors, typography and component conventions
+4. `context/code-standards.md` - Implementation rules and conventions
+5. `context/progress-tracker` - current phase, completed work, open questions, and next steps
+
+update `context/progress-tracker.md` after each meaningful implementation change
+
+if implementation changes the architecture, scope or standard documented in context files, update the relevant file before continuing.
+
 Build Rokswood Marketplace as a frontend-only application incrementally, using a
 spec-driven workflow. The context files define what to build, how to build it, and
 the current state of progress. Always implement against these specs — do not infer
