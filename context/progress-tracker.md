@@ -8,12 +8,13 @@ Complete
 
 ## Current Goal
 
-- Move on to the homepage hero after the header slice
+- Move on to the homepage store grid after the hero slice
 
 ## Completed
 
 - UI context read and applied to the base stylesheet
 - Landing page header component implemented and wired to the homepage
+- Landing page hero component implemented and rendered below the header
 
 ## In Progress
 
@@ -21,7 +22,7 @@ Complete
 
 ## Next Up
 
-- Homepage hero and store grid
+- Homepage store grid
 
 ## Open Questions
 
@@ -30,6 +31,7 @@ Complete
 ## Architecture Decisions
 
 - Header is implemented as a standalone landing-page component and rendered from the homepage
+- Hero is implemented as a standalone landing-page component and rendered below the header
 
 ## Session Notes
 
