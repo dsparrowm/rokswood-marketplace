@@ -67,7 +67,7 @@ const trustItems = [
 export default function TrustBar() {
   return (
     <section className="bg-[var(--bg-dark)] text-[var(--text-on-dark)] shadow-[inset_0_1px_0_rgba(255,255,255,0.06),inset_0_-1px_0_rgba(255,255,255,0.06)]">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-10">
         <ul className="grid gap-3 py-4 sm:gap-4 md:grid-cols-2 lg:grid-cols-5 lg:gap-4 lg:py-4">
           {trustItems.map((item) => (
             <li key={item.label} className="flex items-center gap-2.5 text-sm font-medium text-[var(--text-light)] lg:justify-center lg:text-[15px]">
