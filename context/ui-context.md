@@ -1,0 +1,185 @@
+# UI Context
+
+## Theme
+
+Light mode only. The design language is a clean enterprise B2B marketplace — white and
+light-gray backgrounds, crisp card surfaces, and a bold red primary accent for all key
+CTAs. Dark sections (agent CTA banner, checkout order summary header) use a near-black
+background to create contrast zones. Each store has its own accent color applied to card
+top borders, category labels, and store name text.
+
+## Colors
+
+All components must use these CSS custom property tokens — no hardcoded hex values.
+
+| Role                  | CSS Variable            | Value     |
+| --------------------- | ----------------------- | --------- |
+| Page background       | `--bg-base`             | `#F9FAFB` |
+| Surface / Card        | `--bg-surface`          | `#FFFFFF` |
+| Dark surface          | `--bg-dark`             | `#111827` |
+| Primary text          | `--text-primary`        | `#111827` |
+| Muted / secondary text| `--text-muted`          | `#6B7280` |
+| Light label text      | `--text-light`          | `#9CA3AF` |
+| Primary CTA (red)     | `--accent-primary`      | `#E53935` |
+| Payment CTA (blue)    | `--accent-payment`      | `#2563EB` |
+| Border default        | `--border-default`      | `#E5E7EB` |
+| Border strong         | `--border-strong`       | `#D1D5DB` |
+| Success / In Stock    | `--state-success`       | `#16A34A` |
+| Error                 | `--state-error`         | `#DC2626` |
+| Tag background        | `--bg-tag`              | `#F3F4F6` |
+| Dark text on dark bg  | `--text-on-dark`        | `#FFFFFF` |
+| Muted text on dark bg | `--text-on-dark-muted`  | `#9CA3AF` |
+
+### Store Accent Colors
+
+Each store has a unique accent color used for: card top border, store name text,
+and in-store category labels.
+
+| Store           | CSS Variable             | Value     |
+| --------------- | ------------------------ | --------- |
+| Arackteck       | `--store-arackteck`      | `#3B82F6` |
+| Rokswood Pulse  | `--store-pulse`          | `#E53935` |
+| Metals Extras   | `--store-metals`         | `#111827` |
+| Agrify          | `--store-agrify`         | `#F97316` |
+| Rokswood Energy | `--store-energy`         | `#10B981` |
+| RokswoodEfab    | `--store-efab`           | `#F97316` |
+
+### Store Hero Gradients
+
+The Rokswood Energy store hero uses a left-to-right gradient:
+
+```css
+background: linear-gradient(to right, #E53935, #FBBF24, #84CC16);
+```
+
+Other store heroes default to the dark surface (`--bg-dark`) with white text.
+
+## Typography
+
+| Role       | Font          | CSS Variable    | Tailwind class  |
+| ---------- | ------------- | --------------- | --------------- |
+| UI text    | Inter         | `--font-sans`   | `font-sans`     |
+| Monospace  | JetBrains Mono| `--font-mono`   | `font-mono`     |
+
+### Type Scale (key usages)
+- Hero headline: `text-5xl font-bold` (homepage "Enterprise Marketplace...")
+- Page title: `text-3xl font-bold` (e.g. "Procurement Cart", "Secure Checkout")
+- Store name on card: `text-xl font-semibold`
+- Product name on card: `text-base font-semibold`
+- Product name on detail page: `text-3xl font-bold`
+- Price: `text-2xl font-bold`
+- Body / description: `text-sm text-[--text-muted]`
+- Label / tag: `text-xs font-medium`
+- Nav links: `text-sm font-medium`
+
+## Border Radius
+
+| Context             | Class          |
+| ------------------- | -------------- |
+| Buttons (standard)  | `rounded-md`   |
+| Pills / tag badges  | `rounded-full` |
+| Cards / panels      | `rounded-lg`   |
+| Input fields        | `rounded-md`   |
+| Modals / overlays   | `rounded-xl`   |
+| Hero CTA button     | `rounded-full` |
+
+## Component Library
+
+shadcn/ui on top of Tailwind CSS. Components live in `components/ui/`. Use the CLI
+to add new components rather than writing from scratch. Customise via CSS tokens only —
+do not modify shadcn source files directly.
+
+## Layout Patterns
+
+- **Navbar**: Sticky top bar. Logo left (icon + "Rokswood" bold + "Marketplace" normal weight).
+  Nav links centred (Home, Stores, Become an Agent, Track Order). Right side: cart icon with
+  badge count, currency selector dropdown, "Log in / Profile" dark pill button.
+  Bottom border `--border-default`. Max-width container centred.
+
+- **Page container**: `max-w-7xl mx-auto px-6` for all page content.
+
+- **Hero (homepage)**: Full-width. Centred text layout. Pill badge above headline
+  ("Rokswood Marketplace"). Large bold headline. Subtitle. Single CTA button (`rounded-full`).
+  Generous vertical padding. Background `--bg-base`.
+
+- **Trust bar**: Full-width dark strip (`--bg-dark`). 5 items in a single row with icons.
+  Separates hero from store grid.
+
+- **Store card**: White surface card. Top border in store accent colour (4px, full width).
+  Category badge (top-right, small pill). Store icon square. Store name in accent colour.
+  Description. Tag pills. "Visit Store →" outlined button full-width at bottom.
+
+- **Store grid**: 3-column responsive grid. Horizontal pagination arrows (top-right of section).
+
+- **Store hero (store page)**: Full-width coloured banner. Store logo + name (large, white).
+  Description. Category filter pills.
+
+- **Product grid layout (store page)**: Left sidebar (filters, ~200px fixed width) + right
+  product grid (3-column). Search bar full-width above product grid.
+
+- **Product card**: Image area. Category label in store accent colour (small, above title).
+  Product name bold. Short description muted. Price or "Request Quote". "View Details →" link.
+
+- **Product detail layout**: 2-column split. Left: image gallery (large main image + 4 thumbnails
+  below). Right: SKU, stock badge, product name, description, price, technical summary table,
+  quantity stepper, action buttons, spec sheet download row.
+
+- **Tabs (product page)**: Underline-style tabs. Active tab has bottom border in primary accent.
+
+- **Cart layout**: Single column items (left) + Order Summary sidebar (right, sticky ~380px).
+  Items grouped by store with store header row (dot, name, item count, subtotal).
+
+- **Checkout layout**: 2-column. Left ~60%: multi-step form with numbered section headers.
+  Right ~40%: sticky Order Summary card (dark header, white body) + Payment Method section.
+
+- **Agent CTA banner**: Full-width dark rounded card (`--bg-dark`, `rounded-2xl`). White
+  headline and body text. Two buttons: primary white-fill, secondary white-outline. Right side
+  has a circular icon illustration.
+
+- **Footer**: 3-column layout on white surface. Left: logo + tagline. Centre: Quick Links.
+  Right: Contact (email, phone, social icons). Bottom bar: copyright left, Privacy Policy +
+  Terms of Service right.
+
+## Buttons
+
+| Variant         | Style                                                               |
+| --------------- | ------------------------------------------------------------------- |
+| Primary (red)   | `bg-[--accent-primary] text-white rounded-md px-4 py-2`             |
+| Primary (dark)  | `bg-[--bg-dark] text-white rounded-md px-4 py-2` (navbar login)    |
+| Primary (blue)  | `bg-[--accent-payment] text-white rounded-full` (Pay CTA only)     |
+| Outlined        | `border border-[--border-default] bg-white text-[--text-primary] rounded-md` |
+| Ghost / text    | No border, no fill, underline on hover                              |
+| Hero CTA        | `bg-[--bg-dark] text-white rounded-full px-8 py-3`                  |
+
+## Icons
+
+Lucide React. Stroke-based icons only.
+- `h-4 w-4` for inline / tag use
+- `h-5 w-5` for buttons and nav
+- `h-6 w-6` for trust badges and feature icons
+- Social icons (LinkedIn, Twitter): flat SVG or Lucide equivalents
+
+## Form Fields
+
+Inputs use a minimal underline style on the shipping/billing form, and a bordered box
+style on payment card inputs. Labels are small muted text above the value.
+
+```
+Label (text-xs text-[--text-muted])
+Value (text-sm text-[--text-primary])
+─────────────────────────────────── (bottom border only: border-b border-[--border-default])
+```
+
+Bordered payment inputs:
+```
+border border-[--border-default] rounded-md px-3 py-2 text-sm
+```
+
+## Badges and Tags
+
+- **Store category badge** (on card top-right): `bg-[--bg-tag] text-[--text-muted] text-xs rounded-full px-2 py-0.5`
+- **Product category label** (above product name): store accent colour text, no background, `text-xs font-semibold uppercase`
+- **Stock badge** (In Stock): `text-[--state-success] text-xs font-medium` with a green dot
+- **Item count badge** (cart icon): `bg-[--accent-primary] text-white text-xs rounded-full` absolute positioned
+- **Store name badge** (in cart/checkout order summary): small pill with store accent colour background
+- **Delivery availability tag**: `text-xs text-[--state-success]` for "Available in region" / `text-xs text-[--text-muted]` for "Contact required"
