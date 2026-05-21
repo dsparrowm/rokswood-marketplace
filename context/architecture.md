@@ -25,7 +25,6 @@ Current implementation files live under `src/`, so these boundaries map to
 `src/app/`, `src/components/`, `src/lib/`, `src/store/`, and `src/types/`.
 
 ## Component Boundaries
-
 - Store listing cards are reusable presentational components. Store grid sections
   own layout and pass typed store data into `StoreCard`.
 - Individual store pages compose reusable presentational sections from typed store
@@ -34,10 +33,14 @@ Current implementation files live under `src/`, so these boundaries map to
 - Individual product pages compose reusable presentational sections from typed
   product detail data: `ProductGallery`, `ProductPurchasePanel`, `ProductTabs`,
   `EngineeringResources`, `ProductProcurementCta`, and `ProductTrustRow`.
+- Cart pages compose reusable presentational sections from typed cart data:
+  `CartStoreGroup`, `CartLineItem`, `QuantityStepper`, `CartSummaryCard`,
+  `CartTrustRow`, and `ExchangeRateWidget`.
+- Cart state is managed by a persisted Zustand slice seeded with mock items and rendered through reusable cart sections on `/cart`.
 
 ## State Model
 
-- **Cart state (Zustand)**: Items keyed by product ID — `{ productId, storeId, storeName, name, price, quantity, image }`. Persisted to localStorage. Grouped by store for display.
+- **Cart state (Zustand)**: Items keyed by product ID — `{ id, productId, productSlug, storeSlug, sku, name, description, price, quantity, image, imageAlt, category }`. Persisted to localStorage with seeded mock items on first load and grouped by store for display.
 - **Currency state (Zustand)**: Selected display currency (USD default). Exchange rate fetched from a public rates API.
 - **UI state (Zustand)**: Mobile menu open, filter sidebar open, active product tab.
 - **Form state (React Hook Form)**: Checkout form fields — shipping, billing, delivery method, payment method. Not persisted.

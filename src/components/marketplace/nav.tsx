@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+import { useCartStore } from "@/store/cart.store";
+
 const navItems = [
   { label: "Home", href: "/" },
   { label: "Stores", href: "/stores" },
@@ -35,7 +37,7 @@ function LogoMark() {
   );
 }
 
-function CartIcon() {
+function CartIcon({ count }: { count: number }) {
   return (
     <div className="relative flex h-10 w-10 items-center justify-center text-[var(--text-primary)]">
       <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 stroke-current">
@@ -49,9 +51,11 @@ function CartIcon() {
         <circle cx="10" cy="19" r="1.25" fill="currentColor" />
         <circle cx="17" cy="19" r="1.25" fill="currentColor" />
       </svg>
-      <span className="absolute right-0 top-0 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--accent-primary)] px-1 text-[11px] font-semibold leading-none text-white shadow-sm">
-        2
-      </span>
+      {count > 0 ? (
+        <span className="absolute right-0 top-0 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[var(--accent-primary)] px-1 text-[11px] font-semibold leading-none text-white shadow-sm">
+          {count}
+        </span>
+      ) : null}
     </div>
   );
 }
@@ -67,6 +71,7 @@ function MenuIcon() {
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const cartItemCount = useCartStore((state) => state.items.length);
   const isActiveHref = (href: string) =>
     href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
@@ -101,13 +106,13 @@ export default function Nav() {
         </nav>
 
         <div className="ml-auto hidden shrink-0 items-center gap-4 lg:flex lg:gap-5 xl:gap-6">
-          <button
-            type="button"
-            aria-label="Cart with 2 items"
+          <Link
+            href="/cart"
+            aria-label={`Cart with ${cartItemCount} items`}
             className="inline-flex items-center justify-center"
           >
-            <CartIcon />
-          </button>
+            <CartIcon count={cartItemCount} />
+          </Link>
 
           <button
             type="button"
@@ -129,13 +134,13 @@ export default function Nav() {
         </div>
 
         <div className="ml-auto flex items-center gap-2 lg:hidden">
-          <button
-            type="button"
-            aria-label="Cart with 2 items"
+          <Link
+            href="/cart"
+            aria-label={`Cart with ${cartItemCount} items`}
             className="inline-flex items-center justify-center"
           >
-            <CartIcon />
-          </button>
+            <CartIcon count={cartItemCount} />
+          </Link>
 
           <button
             type="button"

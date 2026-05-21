@@ -4,11 +4,11 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Individual product page implementation complete
+Cart store and cart page implementation complete
 
 ## Current Goal
 
-- Prepare for the cart store feature unit
+- Prepare for the secure checkout feature unit
 
 ## Completed
 
@@ -44,6 +44,9 @@ Individual product page implementation complete
 - Product gallery, purchase panel, technical tabs, engineering resources, procurement CTA, and product trust row components implemented
 - Rokswood Energy catalogue now links its first product to the RX-9000 Smart Industrial Inverter detail page shown in the reference image
 - Individual product page lint and production build verification completed
+- Cart store seeded with mock items, persisted via Zustand, and exposed through `/cart`
+- Cart page and navbar cart badge now reflect live cart state
+- Cart implementation lint and production build verification completed
 
 ## In Progress
 
@@ -51,7 +54,7 @@ Individual product page implementation complete
 
 ## Next Up
 
-- Cart store (Zustand) — cart state, add/remove/update actions, localStorage persistence
+- Secure Checkout — `/checkout` multi-step form, delivery method selector, order summary sidebar, payment method UI
 
 ## Open Questions
 
