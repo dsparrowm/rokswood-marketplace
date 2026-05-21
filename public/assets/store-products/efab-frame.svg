@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Steel frame module">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <path d="M170 86h300v200H170zM170 186h300M270 86v200M370 86v200" stroke="darkorange" stroke-width="14" fill="none" stroke-linejoin="round"/>
+  <path d="M170 86l100 100-100 100M470 86 370 186l100 100" stroke="dimgray" stroke-width="10" fill="none" stroke-linecap="round"/>
+</svg>

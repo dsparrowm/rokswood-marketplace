@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Precision steel beam kit">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <path d="M160 120h320v42H160zM160 198h320v42H160z" fill="darkorange" stroke="sienna" stroke-width="6"/>
+  <path d="M196 162h248v36H196z" fill="dimgray"/>
+  <circle cx="222" cy="141" r="9" fill="whitesmoke"/>
+  <circle cx="418" cy="141" r="9" fill="whitesmoke"/>
+  <circle cx="222" cy="219" r="9" fill="whitesmoke"/>
+  <circle cx="418" cy="219" r="9" fill="whitesmoke"/>
+</svg>

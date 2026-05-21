@@ -67,6 +67,8 @@ function MenuIcon() {
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const isActiveHref = (href: string) =>
+    href === "/" ? pathname === href : pathname === href || pathname.startsWith(`${href}/`);
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--border-default)] bg-white">
@@ -86,7 +88,7 @@ export default function Nav() {
                 <Link
                   href={item.href}
                   className={`text-sm ${
-                    pathname === item.href
+                    isActiveHref(item.href)
                       ? "border-b-2 border-[var(--text-primary)] pb-2 font-medium text-[var(--text-primary)]"
                       : "text-[var(--text-primary)]/80 transition-colors hover:text-[var(--text-primary)]"
                   }`}
@@ -159,7 +161,7 @@ export default function Nav() {
                     <Link
                       href={item.href}
                       className={`block text-sm ${
-                        pathname === item.href
+                        isActiveHref(item.href)
                           ? "font-medium text-[var(--text-primary)]"
                           : "text-[var(--text-primary)]/80"
                       }`}

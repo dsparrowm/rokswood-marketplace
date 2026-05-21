@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Hydraulic power pack">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <rect x="212" y="110" width="216" height="142" rx="16" fill="aliceblue" stroke="steelblue" stroke-width="8"/>
+  <rect x="246" y="76" width="148" height="46" rx="12" fill="steelblue"/>
+  <path d="M256 252v38M384 252v38" stroke="dimgray" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="276" cy="180" r="22" fill="white" stroke="steelblue" stroke-width="7"/>
+  <circle cx="348" cy="180" r="22" fill="white" stroke="steelblue" stroke-width="7"/>
+  <path d="M404 152c54 0 54 76 0 76" stroke="dimgray" stroke-width="10" fill="none" stroke-linecap="round"/>
+</svg>

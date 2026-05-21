@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Industrial generator">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <rect x="148" y="112" width="344" height="146" rx="18" fill="aliceblue" stroke="steelblue" stroke-width="8"/>
+  <rect x="184" y="144" width="100" height="70" fill="darkslategray"/>
+  <path d="M326 146h118M326 172h118M326 198h88" stroke="steelblue" stroke-width="9" stroke-linecap="round"/>
+  <circle cx="210" cy="262" r="20" fill="dimgray"/>
+  <circle cx="430" cy="262" r="20" fill="dimgray"/>
+  <rect x="128" y="258" width="384" height="20" rx="10" fill="darkgray"/>
+</svg>

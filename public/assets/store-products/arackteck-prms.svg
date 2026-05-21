@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Pressure regulation skid">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <rect x="118" y="248" width="404" height="22" rx="11" fill="steelblue"/>
+  <path d="M150 206h340M194 206v42M446 206v42" stroke="dimgray" stroke-width="12" stroke-linecap="round"/>
+  <circle cx="256" cy="176" r="44" fill="white" stroke="steelblue" stroke-width="8"/>
+  <path d="M256 176l24-22" stroke="crimson" stroke-width="7" stroke-linecap="round"/>
+  <rect x="326" y="134" width="94" height="84" rx="12" fill="aliceblue" stroke="steelblue" stroke-width="7"/>
+  <path d="M326 176h-26M420 176h70" stroke="dimgray" stroke-width="12" stroke-linecap="round"/>
+</svg>

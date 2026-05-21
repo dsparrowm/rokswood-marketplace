@@ -22,6 +22,8 @@
   --store-agrify: #f97316;
   --store-energy: #10b981;
   --store-efab: #f97316;
+  --store-energy-warm: #fbbf24;
+  --store-energy-lime: #84cc16;
 
   --background: var(--bg-base);
   --foreground: var(--text-primary);

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Remote sensor node">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <rect x="220" y="78" width="200" height="204" rx="28" fill="white" stroke="lightgray" stroke-width="8"/>
+  <circle cx="320" cy="170" r="54" fill="mistyrose" stroke="crimson" stroke-width="8"/>
+  <circle cx="320" cy="170" r="18" fill="crimson"/>
+  <path d="M236 56l42 44M404 56l-42 44M320 224v58" stroke="darkgray" stroke-width="9" stroke-linecap="round"/>
+  <path d="M288 170h16l10-38 18 78 12-40h18" stroke="white" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

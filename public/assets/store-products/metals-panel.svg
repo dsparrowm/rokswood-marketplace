@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Metal panel system">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <path d="M172 96h296v180H172z" fill="silver" stroke="dimgray" stroke-width="8"/>
+  <path d="M172 142h296M172 188h296M246 96v180M320 96v180M394 96v180" stroke="gray" stroke-width="5"/>
+  <path d="M190 116h38M338 208h94" stroke="white" stroke-width="9" stroke-linecap="round"/>
+</svg>

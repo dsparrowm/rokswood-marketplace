@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Agricultural field monitor">
+  <rect width="640" height="360" fill="honeydew"/>
+  <rect x="250" y="92" width="140" height="160" rx="18" fill="white" stroke="darkorange" stroke-width="8"/>
+  <rect x="274" y="124" width="92" height="50" rx="6" fill="darkslategray"/>
+  <path d="M286 154h22l12-20 18 34 12-14h14" stroke="limegreen" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M320 252v58M272 310h96" stroke="sienna" stroke-width="10" stroke-linecap="round"/>
+  <path d="M122 304c72-48 142-48 214 0M304 304c72-48 142-48 214 0" stroke="yellowgreen" stroke-width="10" fill="none" stroke-linecap="round"/>
+</svg>

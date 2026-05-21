@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Advanced smart meter">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <rect x="214" y="58" width="212" height="244" rx="20" fill="gainsboro" stroke="darkgray" stroke-width="8"/>
+  <rect x="248" y="104" width="144" height="58" rx="4" fill="darkslategray"/>
+  <rect x="262" y="119" width="74" height="20" fill="mediumseagreen"/>
+  <rect x="344" y="119" width="30" height="20" fill="black"/>
+  <circle cx="276" cy="220" r="14" fill="crimson"/>
+  <circle cx="320" cy="220" r="14" fill="orange"/>
+  <circle cx="364" cy="220" r="14" fill="teal"/>
+  <rect x="248" y="302" width="26" height="34" rx="6" fill="dimgray"/>
+  <rect x="307" y="302" width="26" height="34" rx="6" fill="dimgray"/>
+  <rect x="366" y="302" width="26" height="34" rx="6" fill="dimgray"/>
+</svg>

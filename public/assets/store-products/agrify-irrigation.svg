@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Irrigation control kit">
+  <rect width="640" height="360" fill="honeydew"/>
+  <rect x="220" y="82" width="200" height="150" rx="18" fill="white" stroke="darkorange" stroke-width="8"/>
+  <circle cx="284" cy="152" r="28" fill="deepskyblue"/>
+  <circle cx="356" cy="152" r="28" fill="yellowgreen"/>
+  <path d="M152 280h336M208 280c0-34 28-62 62-62h100c34 0 62 28 62 62" stroke="seagreen" stroke-width="12" fill="none" stroke-linecap="round"/>
+  <path d="M250 250v60M320 250v60M390 250v60" stroke="deepskyblue" stroke-width="8" stroke-linecap="round"/>
+</svg>

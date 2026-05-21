@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Welded platform section">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <path d="M150 176h340M188 176v98M452 176v98" stroke="dimgray" stroke-width="12" stroke-linecap="round"/>
+  <path d="M170 140h300v36H170z" fill="darkorange"/>
+  <path d="M188 140v-50M236 140V90M284 140V90M332 140V90M380 140V90M428 140V90" stroke="dimgray" stroke-width="9" stroke-linecap="round"/>
+  <path d="M188 90h240" stroke="dimgray" stroke-width="9" stroke-linecap="round"/>
+</svg>

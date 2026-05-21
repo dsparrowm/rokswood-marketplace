@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Metal bracket kit">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <path d="M214 96h118v118H214z" fill="silver" stroke="dimgray" stroke-width="8"/>
+  <path d="M332 214h94v58H214v-58z" fill="lightgray" stroke="dimgray" stroke-width="8"/>
+  <path d="M332 96v118" stroke="gray" stroke-width="8"/>
+  <circle cx="260" cy="142" r="14" fill="whitesmoke" stroke="dimgray" stroke-width="6"/>
+  <circle cx="380" cy="242" r="14" fill="whitesmoke" stroke="dimgray" stroke-width="6"/>
+</svg>

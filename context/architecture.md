@@ -28,6 +28,9 @@ Current implementation files live under `src/`, so these boundaries map to
 
 - Store listing cards are reusable presentational components. Store grid sections
   own layout and pass typed store data into `StoreCard`.
+- Individual store pages compose reusable presentational sections from typed store
+  detail data: `StoreHero`, `StoreFilterSidebar`, `StoreProductCard`,
+  `StoreTrustRow`, and `StoreTechnicalCta`.
 
 ## State Model
 
@@ -41,6 +44,8 @@ Current implementation files live under `src/`, so these boundaries map to
 - Product and store data is served from a **static JSON mock data layer** (`lib/data/`) for v1.
 - In future iterations, this is replaced by API calls to a backend service without changing component interfaces.
 - All data shapes are typed — components consume typed props, not raw fetch responses.
+- Store directory and individual store page mock data currently live in
+  `src/lib/data/stores.ts` and are shared by `/stores` and `/stores/[slug]`.
 
 ## Invariants
 

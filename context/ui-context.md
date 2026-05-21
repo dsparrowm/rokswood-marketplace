@@ -43,16 +43,18 @@ and in-store category labels.
 | Agrify          | `--store-agrify`         | `#F97316` |
 | Rokswood Energy | `--store-energy`         | `#10B981` |
 | RokswoodEfab    | `--store-efab`           | `#F97316` |
+| Energy warm stop| `--store-energy-warm`    | `#FBBF24` |
+| Energy lime stop| `--store-energy-lime`    | `#84CC16` |
 
 ### Store Hero Gradients
 
-The Rokswood Energy store hero uses a left-to-right gradient:
+The Rokswood Energy store hero uses a left-to-right gradient through tokens:
 
 ```css
-background: linear-gradient(to right, #E53935, #FBBF24, #84CC16);
+background: linear-gradient(to right, var(--accent-primary), var(--store-energy-warm), var(--store-energy-lime));
 ```
 
-Other store heroes default to the dark surface (`--bg-dark`) with white text.
+Other store heroes use a left-to-right dark-to-store-accent gradient with white text.
 
 ## Typography
 
@@ -116,9 +118,13 @@ do not modify shadcn source files directly.
 
 - **Product grid layout (store page)**: Left sidebar (filters, ~200px fixed width) + right
   product grid (3-column). Search bar full-width above product grid.
+  On mobile, the filter sidebar is not stacked as a full sidebar; render search first,
+  then expose filters through a compact collapsible mobile control.
 
 - **Product card**: Image area. Category label in store accent colour (small, above title).
   Product name bold. Short description muted. Price or "Request Quote". "View Details →" link.
+  On mobile, product cards use a shorter image area and clamp descriptions to preserve
+  catalogue scanning speed.
 
 - **Product detail layout**: 2-column split. Left: image gallery (large main image + 4 thumbnails
   below). Right: SKU, stock badge, product name, description, price, technical summary table,

@@ -4,11 +4,11 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Stores directory page implementation
+Individual store page mobile refinement complete
 
 ## Current Goal
 
-- Build the `/stores` directory page using the reusable store grid and existing marketplace shell sections
+- Prepare for the individual product page feature unit
 
 ## Completed
 
@@ -26,14 +26,26 @@ Stores directory page implementation
 - Store card data shape added as a shared typed model
 - Stores directory route added at `/stores` using the existing marketplace navigation, store grid, agent CTA, and footer
 - Header active navigation now derives from the current pathname
+- Shared store mock data moved into `src/lib/data/stores.ts`
+- Stores directory cards now link to individual store slugs
+- Dynamic `/stores/[slug]` route implemented with `generateStaticParams`
+- Store hero, filter sidebar, product browser, product card, trust row, and technical CTA components implemented
+- All six store pages render branded mock product catalogues with local placeholder product illustrations
+- Header active navigation now covers nested store routes
+- Individual store page lint and production build verification completed
+- Store page mobile hero spacing reduced and category pills limited on small screens
+- Store page mobile filters moved from stacked sidebar to compact collapsible filter control
+- Store product cards tightened on mobile with shorter image areas and clamped descriptions
+- Store trust badges simplified on mobile to icon and title
+- Store technical CTA spacing and buttons optimized for mobile screens
 
 ## In Progress
 
-- Verify `/stores` renders correctly with mock store data and active navigation state
+- None
 
 ## Next Up
 
-- Verify `/stores` renders correctly with mock store data
+- Individual product page — `/stores/[slug]/products/[productSlug]`
 
 ## Open Questions
 
@@ -51,9 +63,16 @@ Stores directory page implementation
 - Hero uses a responsive minimum height to preserve the reference-image spacing before the stats/trust bar
 - Store grids render typed `StoreCardData` through the reusable `StoreCard` component
 - Header navigation active state is route-driven through `usePathname`
+- Individual store pages are statically generated from shared typed mock store data
+- Store detail sections are presentational components that receive typed store data via props
+- Product images for the store page are local SVG placeholder assets under `public/assets/store-products/`
+- Desktop store filters remain a sidebar; mobile filters render through a compact collapsible control below search
 
 ## Session Notes
 
 - Use the light-only UI tokens from `ui-context.md` for all header styling
-- `04-full-landingpage.md` is the active implementation spec for the remaining landing page sections
+- `06-individual-stores.md` guided the current store page implementation
 - Verification passed with `npm run lint` and `npm run build`
+- `npm run build` required approved network access to fetch configured Google fonts
+- Local dev server verification was not completed because localhost binding escalation was rejected
+- Mobile refinement verification passed with `npm run lint` and `npm run build`

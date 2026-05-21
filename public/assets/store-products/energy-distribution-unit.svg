@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Industrial power distribution unit">
+  <rect width="640" height="360" fill="whitesmoke"/>
+  <rect x="144" y="70" width="352" height="240" fill="aliceblue" stroke="lightsteelblue" stroke-width="6"/>
+  <path d="M232 70v240M320 70v240M408 70v240" stroke="lightsteelblue" stroke-width="5"/>
+  <rect x="336" y="142" width="52" height="68" rx="4" fill="darkslategray"/>
+  <rect x="346" y="154" width="32" height="24" fill="deepskyblue"/>
+  <circle cx="350" cy="196" r="5" fill="crimson"/>
+  <circle cx="368" cy="196" r="5" fill="orange"/>
+  <circle cx="456" cy="160" r="6" fill="crimson"/>
+  <circle cx="456" cy="184" r="6" fill="mediumseagreen"/>
+  <path d="M170 102h38M170 116h38M432 102h38M432 116h38" stroke="lightsteelblue" stroke-width="5"/>
+</svg>

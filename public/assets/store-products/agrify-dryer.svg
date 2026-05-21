@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-label="Crop drying unit">
+  <rect width="640" height="360" fill="honeydew"/>
+  <rect x="188" y="92" width="264" height="176" rx="18" fill="white" stroke="darkorange" stroke-width="8"/>
+  <path d="M228 132h184M228 172h184M228 212h184" stroke="tan" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="238" cy="278" r="18" fill="sienna"/>
+  <circle cx="402" cy="278" r="18" fill="sienna"/>
+  <path d="M472 126c28 22 28 56 0 78" stroke="darkorange" stroke-width="10" fill="none" stroke-linecap="round"/>
+</svg>
