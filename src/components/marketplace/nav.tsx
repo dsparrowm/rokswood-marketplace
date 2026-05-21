@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const navItems = [
@@ -68,19 +69,19 @@ export default function Nav() {
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--border-default)] bg-white">
       <div className="relative mx-auto flex h-[72px] max-w-[1440px] items-center gap-3 px-4 sm:px-6 lg:px-10">
-        <a href="/" className="flex items-center gap-3 justify-self-start">
+        <Link href="/" className="flex items-center gap-3 justify-self-start">
           <LogoMark />
           <span className="flex items-baseline gap-1 text-[15px] leading-none tracking-[-0.02em] sm:text-[17px]">
             <span className="font-semibold text-[var(--text-primary)]">Rokswood</span>
             <span className="font-normal text-[var(--text-muted)]">Marketplace</span>
           </span>
-        </a>
+        </Link>
 
         <nav aria-label="Primary" className="hidden flex-1 justify-center lg:flex">
           <ul className="flex items-center gap-6 whitespace-nowrap lg:gap-8 xl:gap-10">
             {navItems.map((item) => (
               <li key={item.label}>
-                <a
+                <Link
                   href={item.href}
                   className={`text-sm ${
                     item.active
@@ -89,7 +90,7 @@ export default function Nav() {
                   }`}
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
@@ -115,12 +116,12 @@ export default function Nav() {
             </svg>
           </button>
 
-          <a
+          <Link
             href="/auth/signin"
-            className="inline-flex h-10 items-center rounded-lg bg-[var(--bg-dark)] px-5 text-sm font-medium text-[var(--text-on-dark)] shadow-sm transition-colors hover:bg-black"
+            className="inline-flex h-10 items-center rounded-lg bg-[var(--bg-dark)] px-5 text-sm font-medium text-[var(--text-on-dark)] shadow-sm transition-colors hover:bg-[var(--text-primary)]"
           >
             Log in / Profile
-          </a>
+          </Link>
         </div>
 
         <div className="ml-auto flex items-center gap-2 lg:hidden">
@@ -153,7 +154,7 @@ export default function Nav() {
               <ul className="flex flex-col gap-4">
                 {navItems.map((item) => (
                   <li key={item.label}>
-                    <a
+                    <Link
                       href={item.href}
                       className={`block text-sm ${
                         item.active
@@ -163,7 +164,7 @@ export default function Nav() {
                       onClick={() => setMenuOpen(false)}
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -181,13 +182,13 @@ export default function Nav() {
                 </svg>
               </button>
 
-              <a
+              <Link
                 href="/auth/signin"
                 onClick={() => setMenuOpen(false)}
-                className="inline-flex h-10 items-center rounded-lg bg-[var(--bg-dark)] px-4 text-sm font-medium text-[var(--text-on-dark)] shadow-sm transition-colors hover:bg-black"
+                className="inline-flex h-10 items-center rounded-lg bg-[var(--bg-dark)] px-4 text-sm font-medium text-[var(--text-on-dark)] shadow-sm transition-colors hover:bg-[var(--text-primary)]"
               >
                 Log in / Profile
-              </a>
+              </Link>
             </div>
           </div>
         ) : null}
