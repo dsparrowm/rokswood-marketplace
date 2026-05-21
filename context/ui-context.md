@@ -129,8 +129,12 @@ do not modify shadcn source files directly.
 - **Product detail layout**: 2-column split. Left: image gallery (large main image + 4 thumbnails
   below). Right: SKU, stock badge, product name, description, price, technical summary table,
   quantity stepper, action buttons, spec sheet download row.
+  On mobile, the gallery stacks above the procurement panel, thumbnails remain in a compact
+  4-column row, and action buttons span the available width.
 
 - **Tabs (product page)**: Underline-style tabs. Active tab has bottom border in primary accent.
+  On mobile, tabs render in a horizontal overflow row and secondary tab content is exposed
+  through compact disclosure panels below the main specifications.
 
 - **Cart layout**: Single column items (left) + Order Summary sidebar (right, sticky ~380px).
   Items grouped by store with store header row (dot, name, item count, subtotal).

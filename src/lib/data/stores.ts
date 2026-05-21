@@ -249,13 +249,13 @@ export const stores: StoreDetailData[] = [
     segments: ["All Segments", "Residential Utilities", "Manufacturing", "Commercial Infrastructure"],
     products: [
       {
-        slug: "rx-750-advanced-smart-meter",
-        name: "RX-750 Advanced Smart Meter",
+        slug: "rx-9000-smart-industrial-inverter",
+        name: "RX-9000 Smart Industrial Inverter",
         category: "Commercial Infrastructure",
-        description: "Three-phase intelligent energy monitoring device with real-time data transmission and load balancing.",
-        price: 450,
-        image: "/assets/store-products/energy-meter.svg",
-        imageAlt: "Advanced smart meter product illustration",
+        description: "High-efficiency, cloud-connected power conversion system for demanding industrial environments.",
+        price: 4250,
+        image: "/assets/store-products/energy-inverter.svg",
+        imageAlt: "RX-9000 smart industrial inverter product illustration",
       },
       {
         slug: "industrial-power-distribution-unit",

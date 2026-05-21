@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-label="Smart industrial inverter">
+  <rect width="640" height="640" fill="whitesmoke"/>
+  <rect x="198" y="138" width="244" height="356" rx="18" fill="gainsboro"/>
+  <rect x="212" y="122" width="196" height="366" rx="22" fill="white" stroke="lightgray" stroke-width="6"/>
+  <path d="M408 138h54c12 0 22 10 22 22v300c0 12-10 22-22 22h-54z" fill="silver" stroke="darkgray" stroke-width="6"/>
+  <rect x="244" y="156" width="84" height="118" rx="10" fill="darkslategray"/>
+  <text x="286" y="202" fill="violet" font-family="Arial, sans-serif" font-size="24" font-weight="700" text-anchor="middle">01:70</text>
+  <circle cx="268" cy="235" r="4" fill="mediumseagreen"/>
+  <circle cx="286" cy="235" r="4" fill="orange"/>
+  <circle cx="304" cy="235" r="4" fill="deepskyblue"/>
+  <path d="M356 178h42M356 204h42M356 230h42" stroke="gainsboro" stroke-width="8" stroke-linecap="round"/>
+  <rect x="268" y="488" width="44" height="24" rx="8" fill="dimgray"/>
+  <rect x="408" y="488" width="44" height="24" rx="8" fill="dimgray"/>
+  <path d="M454 296v96" stroke="dimgray" stroke-width="6" stroke-linecap="round"/>
+</svg>

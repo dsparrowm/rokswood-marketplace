@@ -31,6 +31,9 @@ Current implementation files live under `src/`, so these boundaries map to
 - Individual store pages compose reusable presentational sections from typed store
   detail data: `StoreHero`, `StoreFilterSidebar`, `StoreProductCard`,
   `StoreTrustRow`, and `StoreTechnicalCta`.
+- Individual product pages compose reusable presentational sections from typed
+  product detail data: `ProductGallery`, `ProductPurchasePanel`, `ProductTabs`,
+  `EngineeringResources`, `ProductProcurementCta`, and `ProductTrustRow`.
 
 ## State Model
 
@@ -46,6 +49,9 @@ Current implementation files live under `src/`, so these boundaries map to
 - All data shapes are typed — components consume typed props, not raw fetch responses.
 - Store directory and individual store page mock data currently live in
   `src/lib/data/stores.ts` and are shared by `/stores` and `/stores/[slug]`.
+- Individual product detail data is resolved from `src/lib/data/products.ts`,
+  which enriches store catalogue products with gallery, technical summary,
+  specifications, resources, and procurement-page metadata.
 
 ## Invariants
 
