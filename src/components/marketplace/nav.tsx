@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navItems = [
-  { label: "Home", href: "/", active: true },
+  { label: "Home", href: "/" },
   { label: "Stores", href: "/stores" },
   { label: "Become an Agent", href: "/agents" },
   { label: "Track Order", href: "/track-order" },
@@ -65,6 +66,7 @@ function MenuIcon() {
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--border-default)] bg-white">
@@ -84,7 +86,7 @@ export default function Nav() {
                 <Link
                   href={item.href}
                   className={`text-sm ${
-                    item.active
+                    pathname === item.href
                       ? "border-b-2 border-[var(--text-primary)] pb-2 font-medium text-[var(--text-primary)]"
                       : "text-[var(--text-primary)]/80 transition-colors hover:text-[var(--text-primary)]"
                   }`}
@@ -157,7 +159,7 @@ export default function Nav() {
                     <Link
                       href={item.href}
                       className={`block text-sm ${
-                        item.active
+                        pathname === item.href
                           ? "font-medium text-[var(--text-primary)]"
                           : "text-[var(--text-primary)]/80"
                       }`}

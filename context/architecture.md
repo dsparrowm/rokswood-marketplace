@@ -21,6 +21,14 @@
 - `lib/` — Utility functions, mock data, constants. No server-side logic.
 - `types/` — Shared TypeScript types and interfaces.
 
+Current implementation files live under `src/`, so these boundaries map to
+`src/app/`, `src/components/`, `src/lib/`, `src/store/`, and `src/types/`.
+
+## Component Boundaries
+
+- Store listing cards are reusable presentational components. Store grid sections
+  own layout and pass typed store data into `StoreCard`.
+
 ## State Model
 
 - **Cart state (Zustand)**: Items keyed by product ID — `{ productId, storeId, storeName, name, price, quantity, image }`. Persisted to localStorage. Grouped by store for display.

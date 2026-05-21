@@ -4,11 +4,11 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Landing page refinement
+Stores directory page implementation
 
 ## Current Goal
 
-- Refine landing page hero/stat section spacing against `04-full-landingpage.md`
+- Build the `/stores` directory page using the reusable store grid and existing marketplace shell sections
 
 ## Completed
 
@@ -21,14 +21,19 @@ Landing page refinement
 - Landing page footer implemented with logo, quick links, contact details, socials, and legal row
 - Full landing page production build and lint verification completed
 - Hero section height refined so the stats/trust bar reads as a separate section below the hero
+- Store card markup extracted into a reusable `StoreCard` component
+- Store icon rendering extracted into a reusable `StoreIcon` component
+- Store card data shape added as a shared typed model
+- Stores directory route added at `/stores` using the existing marketplace navigation, store grid, agent CTA, and footer
+- Header active navigation now derives from the current pathname
 
 ## In Progress
 
-- Verify hero/stat spacing refinement
+- Verify `/stores` renders correctly with mock store data and active navigation state
 
 ## Next Up
 
-- Stores directory page (`/stores`) with store cards grid
+- Verify `/stores` renders correctly with mock store data
 
 ## Open Questions
 
@@ -44,6 +49,8 @@ Landing page refinement
 - Footer is implemented as a standalone landing-page component rendered after the agent CTA
 - Root metadata now identifies Rokswood Marketplace, and the app font setup uses Inter and JetBrains Mono per `ui-context.md`
 - Hero uses a responsive minimum height to preserve the reference-image spacing before the stats/trust bar
+- Store grids render typed `StoreCardData` through the reusable `StoreCard` component
+- Header navigation active state is route-driven through `usePathname`
 
 ## Session Notes
 
