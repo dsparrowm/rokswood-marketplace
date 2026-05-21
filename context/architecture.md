@@ -37,6 +37,10 @@ Current implementation files live under `src/`, so these boundaries map to
   `CartStoreGroup`, `CartLineItem`, `QuantityStepper`, `CartSummaryCard`,
   `CartTrustRow`, and `ExchangeRateWidget`.
 - Cart state is managed by a persisted Zustand slice seeded with mock items and rendered through reusable cart sections on `/cart`.
+- Checkout pages compose reusable presentational sections from typed checkout form data:
+  `CheckoutSection`, `CheckoutTextField`, `CheckoutTextareaField`,
+  `CheckoutDeliveryMethods`, `CheckoutOrderSummary`, and `CheckoutPaymentMethod`.
+- Checkout totals are derived from the flat cart state and selected delivery method via `lib/checkout.ts`.
 
 ## State Model
 
