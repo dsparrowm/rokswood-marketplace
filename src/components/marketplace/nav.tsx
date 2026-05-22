@@ -126,7 +126,7 @@ export default function Nav() {
           </button>
 
           <Link
-            href="/auth/signin"
+            href="/agents/login"
             className="inline-flex h-10 items-center rounded-lg bg-[var(--bg-dark)] px-5 text-sm font-medium text-[var(--text-on-dark)] shadow-sm transition-colors hover:bg-[var(--text-primary)]"
           >
             Log in / Profile
@@ -192,7 +192,7 @@ export default function Nav() {
               </button>
 
               <Link
-                href="/auth/signin"
+                href="/agents/login"
                 onClick={() => setMenuOpen(false)}
                 className="inline-flex h-10 items-center rounded-lg bg-[var(--bg-dark)] px-4 text-sm font-medium text-[var(--text-on-dark)] shadow-sm transition-colors hover:bg-[var(--text-primary)]"
               >

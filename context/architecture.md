@@ -18,6 +18,10 @@
 - `app/(commerce)/` — Cart (`/cart`) and Checkout (`/checkout`). Driven by Zustand cart store.
 - `app/agents/` — Become an Agent application page. Frontend-only static marketing and
   registration flow.
+- `app/agents/login/` — Agent portal login page. Frontend-only static shell with a
+  client form that validates dummy credentials and routes to the dashboard mockup.
+- `app/agents/dashboard/` — Agent portal dashboard. Frontend-only static mock view
+  for storefront performance, wallet status, commissions, and activity.
 - `components/` — All UI components. No data fetching inside components — data is passed as props or read from Zustand.
 - `store/` — Zustand store slices (cart, currency, UI).
 - `lib/` — Utility functions, mock data, constants. No server-side logic.
@@ -46,6 +50,12 @@ Current implementation files live under `src/`, so these boundaries map to
 - Become an Agent pages compose reusable sections: `AgentHero`, `AgentTrustStrip`,
   `AgentBenefits`, `AgentCommissionTiers`, `AgentRegistrationForm`, and `AgentFaq`.
   The registration form owns its frontend-only React Hook Form/Zod validation.
+- Agent dashboard pages compose reusable presentational sections from typed dashboard
+  data: `AgentDashboardHeader`, `AgentStatusBanner`, `AgentMetricCard`,
+  `AgentSalesPerformance`, `AgentWalletCard`, `AgentStorefrontCard`,
+  `AgentCommissionsTable`, `AgentActivityCard`, and `AgentDashboardFooter`.
+- Agent login pages compose a reusable `AgentLoginPage` shell with the client
+  `AgentLoginForm` for React Hook Form/Zod validation and dummy credential routing.
 
 ## State Model
 
@@ -64,6 +74,10 @@ Current implementation files live under `src/`, so these boundaries map to
 - Individual product detail data is resolved from `src/lib/data/products.ts`,
   which enriches store catalogue products with gallery, technical summary,
   specifications, resources, and procurement-page metadata.
+- Agent dashboard mock data lives in `src/lib/data/agent-dashboard.ts` and feeds
+  the static `/agents/dashboard` portal route.
+- Agent login dummy credentials are colocated with `AgentLoginForm` because they are
+  v1-only frontend authentication data for the static portal mockup.
 
 ## Invariants
 

@@ -4,7 +4,7 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Become an Agent page refinement complete
+Agent login implementation complete
 
 ## Current Goal
 
@@ -61,6 +61,22 @@ Become an Agent page refinement complete
 - Become an Agent implementation lint and TypeScript verification completed
 - Become an Agent desktop hero now fills the first viewport below the sticky navbar
 - Enterprise Partner commission tier now renders as a dark card matching the reference
+- Agent Dashboard product scope added to `project-overview.md`
+- Agent Dashboard component boundaries and mock data source added to `architecture.md`
+- Agent Dashboard UI pattern and supporting dashboard state tokens added to `ui-context.md`
+- `/agents/dashboard` route implemented with a dedicated agent portal shell
+- Agent dashboard mock data added in `src/lib/data/agent-dashboard.ts`
+- Agent dashboard header, status banner, metric cards, sales chart, wallet card, storefront card, commissions table, activity timeline, and compact footer implemented
+- Agent Dashboard lint and TypeScript verification completed
+- Agent Login product scope added to `project-overview.md`
+- Agent Login component boundary and dummy credential data decision added to `architecture.md`
+- Agent Login responsive UI pattern added to `ui-context.md`
+- `/agents/login` route implemented with a dedicated portal shell and mobile-responsive login form
+- Agent login dummy credentials validate through React Hook Form and Zod before routing to `/agents/dashboard`
+- Navbar `Log in / Profile` links now route to `/agents/login`
+- Agent Login lint and TypeScript verification completed
+- Agent Login page copy simplified to short one-line messaging
+- Agent Login password visibility control is interactive and submit button uses pointer cursor
 
 ## In Progress
 
@@ -68,7 +84,7 @@ Become an Agent page refinement complete
 
 ## Next Up
 
-- None
+- Run `pnpm build` once network access for Next.js Google font fetching is approved
 
 ## Open Questions
 
@@ -94,6 +110,10 @@ Become an Agent page refinement complete
 - Product detail sections are reusable presentational components that receive typed product data via props
 - Checkout sections are reusable presentational components that receive typed form and cart summary data via props
 - Become an Agent page uses static presentational sections plus a colocated client registration form for frontend-only validation
+- Agent Dashboard uses a dedicated portal shell rather than the public buyer navbar/footer because the reference image shows agent-specific chrome
+- Agent Dashboard remains frontend-only and static, with typed mock data feeding presentational components
+- Agent Login uses a dedicated portal shell rather than the public buyer navbar/footer to match approved-agent portal access
+- Agent Login keeps dummy credentials colocated with the form because no real auth boundary exists in the frontend-only v1
 
 ## Session Notes
 
@@ -110,3 +130,11 @@ Become an Agent page refinement complete
 - `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
 - Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected
 - Become an Agent refinement verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
+- Agent Dashboard verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
+- `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
+- Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected
+- Agent Dashboard mobile commissions table was replaced with compact mobile cards after rereading `11-agent-dashboard.md`
+- Post-correction verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`; `pnpm build` still requires network access for Google font fetching and escalation was rejected
+- Agent Login verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
+- `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
+- Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected

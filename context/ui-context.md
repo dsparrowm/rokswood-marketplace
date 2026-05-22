@@ -25,10 +25,18 @@ All components must use these CSS custom property tokens — no hardcoded hex va
 | Border default        | `--border-default`      | `#E5E7EB` |
 | Border strong         | `--border-strong`       | `#D1D5DB` |
 | Success / In Stock    | `--state-success`       | `#16A34A` |
+| Success soft          | `--state-success-soft`  | `#DCFCE7` |
 | Error                 | `--state-error`         | `#DC2626` |
+| Warning               | `--state-warning`       | `#F59E0B` |
+| Warning soft          | `--state-warning-soft`  | `#FEF3C7` |
+| Warning text          | `--state-warning-text`  | `#92400E` |
+| Info soft             | `--state-info-soft`     | `#E0F2FE` |
+| Purple accent         | `--accent-purple`       | `#9333EA` |
+| Purple soft           | `--accent-purple-soft`  | `#F3E8FF` |
 | Tag background        | `--bg-tag`              | `#F3F4F6` |
 | Dark text on dark bg  | `--text-on-dark`        | `#FFFFFF` |
 | Muted text on dark bg | `--text-on-dark-muted`  | `#9CA3AF` |
+| Agent chart fill      | `--agent-chart-fill`    | `#E0F2FE` |
 
 ### Store Accent Colors
 
@@ -152,6 +160,23 @@ do not modify shadcn source files directly.
   the sticky navbar so the trust strip appears after the initial scroll. Registration
   fields use bordered `rounded-md` inputs on `--bg-base`, with `--accent-payment` for
   focus states and submit actions.
+
+- **Agent Dashboard**: Dedicated portal shell, not the public buyer navbar. Header is a
+  white 64px bar with square logo, "Rokswood Marketplace Agent" title, and profile
+  menu. Below it, a soft warning action strip carries KYC status badges and verify
+  identity CTA. Main content uses `max-w-7xl mx-auto px-6`, a 4-card metrics grid,
+  then a two-column layout with a wider analytics column and narrower wallet/storefront
+  column. Cards use `rounded-lg`, white surfaces, subtle borders, and compact typography.
+  The wallet header uses `--bg-dark`; chart accents use `--accent-payment` and
+  `--agent-chart-fill`. The dashboard footer is a compact white legal bar rather than
+  the full marketplace footer.
+
+- **Agent Login**: Dedicated portal entry page on `--bg-base` with a compact white
+  login panel and a dark brand/operations panel on desktop. Desktop layout uses two
+  columns inside `max-w-6xl mx-auto px-6`; mobile hides the dense operations panel and
+  shows only the brand header, credential form, demo account helper, and compact trust
+  row. Inputs use bordered `rounded-md` fields, the primary submit action uses
+  `--bg-dark`, and secondary links use `--accent-payment`.
 
 - **Footer**: 3-column layout on white surface. Left: logo + tagline. Centre: Quick Links.
   Right: Contact (email, phone, social icons). Bottom bar: copyright left, Privacy Policy +

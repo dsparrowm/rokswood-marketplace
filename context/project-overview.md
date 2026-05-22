@@ -118,6 +118,22 @@ agricultural tech, and fabrication components across multiple stores in a single
 - FAQ section covering commissions, approval timing, multi-store representation, and training
 - Footer
 
+### Agent Dashboard (`/agents/dashboard`)
+- Agent portal header with Rokswood Marketplace Agent branding and profile menu
+- KYC/action-required alert strip with KYC and agreement status badges plus verify identity action
+- Dashboard overview with total sales, commission earned, wallet balance, and pending commission metrics
+- Sales performance card with 30-day selector, summary figures, and weekly trend chart
+- Wallet card with available balance, withdraw/history actions, pending funds, and linked bank
+- Storefront summary card with active store status, assigned brands, visitor count, conversion rate, and referral link copy control
+- Recent commissions table and recent activity timeline
+- Compact legal footer for the agent portal
+
+### Agent Login (`/agents/login`)
+- Dedicated frontend-only portal login for approved Rokswood agents
+- Mobile-responsive split layout with brand panel, credential form, demo account helper, and trust indicators
+- Dummy email/password authentication redirects successful login attempts to `/agents/dashboard`
+- Failed dummy authentication shows an inline form-level error
+
 ## Features
 
 ### Multi-Store Cart
@@ -141,6 +157,8 @@ agricultural tech, and fabrication components across multiple stores in a single
 - "Become a Rokswood Agent" CTA section on homepage and stores page
 - Apply Now / Contact Sales actions
 - Dedicated `/agents` application page with registration form and commission tiers
+- Dedicated `/agents/login` page for approved agents to access the portal mockup
+- Static `/agents/dashboard` portal mockup for approved agents to preview storefront performance, wallet status, commissions, and activity
 
 ## Success Criteria
 
