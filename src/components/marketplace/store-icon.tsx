@@ -2,9 +2,21 @@ import type { StoreIconName } from "@/types/store";
 
 type StoreIconProps = {
   icon: StoreIconName;
+  logoSrc?: string;
+  logoAlt?: string;
 };
 
-export default function StoreIcon({ icon }: StoreIconProps) {
+export default function StoreIcon({ icon, logoSrc, logoAlt }: StoreIconProps) {
+  if (logoSrc) {
+    return (
+      <img
+        src={logoSrc}
+        alt={logoAlt ?? "Store logo"}
+        className="h-10 w-10 object-contain sm:h-12 sm:w-12"
+      />
+    );
+  }
+
   if (icon === "pulse") {
     return (
       <svg aria-hidden="true" viewBox="0 0 32 32" className="h-8 w-8">

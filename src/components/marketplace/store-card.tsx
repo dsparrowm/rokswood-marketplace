@@ -13,7 +13,7 @@ export default function StoreCard({ store }: StoreCardProps) {
     >
       <div className="mb-8 flex items-start justify-between gap-4">
         <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-[var(--bg-base)]">
-          <StoreIcon icon={store.icon} />
+          <StoreIcon icon={store.icon} logoSrc={store.logoSrc} logoAlt={store.logoAlt ?? `${store.name} logo`} />
         </div>
         <span className="rounded-md bg-[var(--bg-tag)] px-3 py-1 text-xs font-semibold text-[var(--text-muted)]">
           {store.category}
@@ -38,7 +38,7 @@ export default function StoreCard({ store }: StoreCardProps) {
 
       <Link
         href={store.href}
-        className="mt-auto inline-flex h-12 w-full items-center justify-center rounded-md border border-[var(--border-strong)] bg-[var(--bg-surface)] text-sm font-semibold text-[var(--text-primary)]"
+        className="mt-8 inline-flex h-12 w-full items-center justify-center rounded-md border border-[var(--border-strong)] bg-[var(--bg-surface)] text-sm font-semibold text-[var(--text-primary)]"
       >
         Visit Store
         <svg aria-hidden="true" viewBox="0 0 20 20" className="ml-2 h-4 w-4 fill-none stroke-current">

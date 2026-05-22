@@ -11,7 +11,7 @@ export default function StoreHero({ store }: StoreHeroProps) {
       <div className="mx-auto max-w-[980px] lg:max-w-[1000px]">
         <div className="flex items-center gap-4 sm:gap-5">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-[var(--bg-surface)] shadow-sm sm:h-16 sm:w-16">
-            <StoreIcon icon={store.icon} />
+            <StoreIcon icon={store.icon} logoSrc={store.logoSrc} logoAlt={store.logoAlt ?? `${store.name} logo`} />
           </div>
           <h1 className="text-2xl font-bold tracking-[-0.01em] sm:text-4xl">
             {store.name}

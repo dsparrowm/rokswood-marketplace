@@ -77,6 +77,8 @@ Agent login implementation complete
 - Agent Login lint and TypeScript verification completed
 - Agent Login page copy simplified to short one-line messaging
 - Agent Login password visibility control is interactive and submit button uses pointer cursor
+- Store card "Visit Store" buttons now use a consistent top margin instead of being pinned with auto spacing
+- Store cards and store heroes now use PNG logos from `public/assets/store-logos` where available, with icon fallback for stores without an asset
 
 ## In Progress
 

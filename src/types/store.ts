@@ -9,6 +9,8 @@ export type StoreCardData = {
   href: string;
   accentClassName: string;
   icon: StoreIconName;
+  logoSrc?: string;
+  logoAlt?: string;
 };
 
 export type StoreProduct = {
