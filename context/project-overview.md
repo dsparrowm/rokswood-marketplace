@@ -134,6 +134,11 @@ agricultural tech, and fabrication components across multiple stores in a single
 - Dummy email/password authentication redirects successful login attempts to `/agents/dashboard`
 - Failed dummy authentication shows an inline form-level error
 
+### Track Order (`/track-order`)
+- Dedicated frontend-only order lookup page for enterprise buyers
+- Simple responsive layout with order-number/email lookup, current shipment status, tracking timeline, store breakdown, and support actions
+- Mock tracking data powers the page in v1 with no backend dependency
+
 ## Features
 
 ### Multi-Store Cart
@@ -159,6 +164,9 @@ agricultural tech, and fabrication components across multiple stores in a single
 - Dedicated `/agents` application page with registration form and commission tiers
 - Dedicated `/agents/login` page for approved agents to access the portal mockup
 - Static `/agents/dashboard` portal mockup for approved agents to preview storefront performance, wallet status, commissions, and activity
+
+### Order Tracking
+- Dedicated `/track-order` page for buyers to look up order status, shipment progress, and support details after checkout
 
 ## Success Criteria
 

@@ -178,6 +178,12 @@ do not modify shadcn source files directly.
   row. Inputs use bordered `rounded-md` fields, the primary submit action uses
   `--bg-dark`, and secondary links use `--accent-payment`.
 
+- **Track Order**: Compact buyer lookup page on `--bg-base` with a centered
+  intro, a focused lookup form, and a single responsive result column that shows
+  shipment status, timeline updates, store breakdown, and support actions. On mobile,
+  the lookup form stays first, the status summary follows immediately, and the
+  supporting details compress to one column with minimal visual noise.
+
 - **Footer**: 3-column layout on white surface. Left: logo + tagline. Centre: Quick Links.
   Right: Contact (email, phone, social icons). Bottom bar: copyright left, Privacy Policy +
   Terms of Service right.

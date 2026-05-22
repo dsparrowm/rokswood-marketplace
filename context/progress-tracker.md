@@ -4,7 +4,7 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Agent login implementation complete
+Track order implementation complete
 
 ## Current Goal
 
@@ -79,6 +79,10 @@ Agent login implementation complete
 - Agent Login password visibility control is interactive and submit button uses pointer cursor
 - Store card "Visit Store" buttons now use a consistent top margin instead of being pinned with auto spacing
 - Store cards and store heroes now use PNG logos from `public/assets/store-logos` where available, with icon fallback for stores without an asset
+- Track Order route implemented at `/track-order` with a reusable lookup form, live status result card, shipment timeline, store breakdown, and support actions
+- Track Order responsive layout implemented with a compact lookup-first mobile flow and a two-column desktop presentation
+- Track Order mock shipment data added in `src/lib/data/order-tracking.ts`
+- Track Order production build verification completed
 
 ## In Progress
 
@@ -86,7 +90,7 @@ Agent login implementation complete
 
 ## Next Up
 
-- Run `pnpm build` once network access for Next.js Google font fetching is approved
+- None
 
 ## Open Questions
 
@@ -116,6 +120,7 @@ Agent login implementation complete
 - Agent Dashboard remains frontend-only and static, with typed mock data feeding presentational components
 - Agent Login uses a dedicated portal shell rather than the public buyer navbar/footer to match approved-agent portal access
 - Agent Login keeps dummy credentials colocated with the form because no real auth boundary exists in the frontend-only v1
+- Track Order uses static mock shipment data because v1 has no backend order lookup service
 
 ## Session Notes
 
@@ -131,6 +136,9 @@ Agent login implementation complete
 - Become an Agent verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
 - `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
 - Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected
+- `pnpm lint` completed with one pre-existing warning in `src/components/marketplace/store-icon.tsx` about a raw `<img>` tag
+- `pnpm exec tsc --noEmit` passed after the track-order implementation
+- `pnpm build` passed after the track-order implementation
 - Become an Agent refinement verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
 - Agent Dashboard verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
 - `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected

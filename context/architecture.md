@@ -22,6 +22,8 @@
   client form that validates dummy credentials and routes to the dashboard mockup.
 - `app/agents/dashboard/` — Agent portal dashboard. Frontend-only static mock view
   for storefront performance, wallet status, commissions, and activity.
+- `app/track-order/` — Order tracking page. Frontend-only static lookup view for
+  shipment status, timeline updates, and support details.
 - `components/` — All UI components. No data fetching inside components — data is passed as props or read from Zustand.
 - `store/` — Zustand store slices (cart, currency, UI).
 - `lib/` — Utility functions, mock data, constants. No server-side logic.
@@ -56,6 +58,8 @@ Current implementation files live under `src/`, so these boundaries map to
   `AgentCommissionsTable`, `AgentActivityCard`, and `AgentDashboardFooter`.
 - Agent login pages compose a reusable `AgentLoginPage` shell with the client
   `AgentLoginForm` for React Hook Form/Zod validation and dummy credential routing.
+- Track order pages compose reusable presentational sections from typed tracking
+  data: `TrackOrderLookupForm`, `TrackOrderResult`, and `TrackOrderTimeline`.
 
 ## State Model
 
@@ -78,6 +82,8 @@ Current implementation files live under `src/`, so these boundaries map to
   the static `/agents/dashboard` portal route.
 - Agent login dummy credentials are colocated with `AgentLoginForm` because they are
   v1-only frontend authentication data for the static portal mockup.
+- Track order mock shipment data lives in `src/lib/data/order-tracking.ts` and is
+  used by the static `/track-order` lookup page.
 
 ## Invariants
 
