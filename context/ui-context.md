@@ -146,6 +146,13 @@ do not modify shadcn source files directly.
   headline and body text. Two buttons: primary white-fill, secondary white-outline. Right side
   has a circular icon illustration.
 
+- **Become an Agent page**: Centred light-blue hero using `--accent-payment` with white
+  pill CTAs, dark trust strip, three-card benefits grid, four-card commission grid, centred
+  registration card, and FAQ cards. On desktop, the hero fills the first viewport below
+  the sticky navbar so the trust strip appears after the initial scroll. Registration
+  fields use bordered `rounded-md` inputs on `--bg-base`, with `--accent-payment` for
+  focus states and submit actions.
+
 - **Footer**: 3-column layout on white surface. Left: logo + tagline. Centre: Quick Links.
   Right: Contact (email, phone, social icons). Bottom bar: copyright left, Privacy Policy +
   Terms of Service right.

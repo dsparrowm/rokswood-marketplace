@@ -104,9 +104,9 @@ export default function CheckoutPage() {
       deliveryMethod: "standard",
       orderNotes: "",
       paymentMethod: "card",
-      cardNumber: "4242 4242 4242 4242",
+      cardNumber: "•••• •••• •••• 4242",
       cardExpiry: "12/25",
-      cardCvv: "424",
+      cardCvv: "•••",
     },
     mode: "onSubmit",
   });
@@ -136,7 +136,6 @@ export default function CheckoutPage() {
         <section className="px-4 py-8 sm:px-6 lg:px-10 lg:py-10">
           <div className="mx-auto max-w-7xl">
             <div className="max-w-3xl">
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--text-light)]">Enterprise Procurement</p>
               <h1 className="mt-2 text-3xl font-bold tracking-[-0.03em] text-[var(--text-primary)] sm:text-4xl">
                 Secure Checkout
               </h1>

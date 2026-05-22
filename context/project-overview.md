@@ -104,7 +104,18 @@ agricultural tech, and fabrication components across multiple stores in a single
   - Card input fields (number, expiry, CVV)
   - "Pay $X" CTA button
   - "Request Proforma Invoice" link
-  - Security badges (256-bit SSL, Enterprise Ready, Global Compliance)
+- Security badges (256-bit SSL, Enterprise Ready, Global Compliance)
+- Footer
+
+### Become an Agent (`/agents`)
+- Hero section with partner-program status badge, centred headline, application CTA, and commission-tier CTA
+- Dark trust strip (Verified Marketplace Partner System, Secure Registration Process,
+  Global Agent Network, Enterprise Compliance Standards)
+- "Why partner with Rokswood?" benefit cards for growth, distribution network, and digital tracking
+- Transparent Commission Structure with Standard, Silver, Gold, and Enterprise Partner tiers
+- Agent Registration form with Personal Information, Business Information, Agent Preferences,
+  Account Setup, terms agreement, and submit CTA
+- FAQ section covering commissions, approval timing, multi-store representation, and training
 - Footer
 
 ## Features
@@ -129,6 +140,7 @@ agricultural tech, and fabrication components across multiple stores in a single
 ### Agent Programme
 - "Become a Rokswood Agent" CTA section on homepage and stores page
 - Apply Now / Contact Sales actions
+- Dedicated `/agents` application page with registration form and commission tiers
 
 ## Success Criteria
 

@@ -1,4 +1,4 @@
-import { Building2, Landmark, Lock } from "lucide-react";
+import { Landmark, Lock } from "lucide-react";
 
 import { checkoutPaymentMethods } from "@/lib/data/checkout";
 import { cn } from "@/lib/utils";
@@ -17,24 +17,19 @@ type CheckoutPaymentMethodProps = {
 function PaymentMarks({ methodId }: { methodId: CheckoutPaymentMethodId }) {
   if (methodId === "card") {
     return (
-      <div className="flex items-center gap-1.5 text-[10px] font-semibold leading-none">
-        <span className="rounded bg-[#1D4ED8] px-1.5 py-1 text-white">VISA</span>
-        <span className="rounded bg-[#EF4444] px-1.5 py-1 text-white">MC</span>
+      <div className="flex items-center gap-1 text-[10px] font-semibold leading-none">
+        <span className="rounded-sm bg-[var(--accent-payment)] px-1.5 py-1 text-white">VISA</span>
+        <span className="rounded-sm bg-[var(--accent-primary)] px-1.5 py-1 text-white">MC</span>
         <span className="text-[var(--accent-payment)]">stripe</span>
       </div>
     );
   }
 
   if (methodId === "bank_transfer") {
-    return (
-      <div className="flex items-center gap-1.5 text-sm font-semibold text-[var(--accent-payment)]">
-        <Landmark className="h-4 w-4" strokeWidth={1.8} />
-        <span>paystack</span>
-      </div>
-    );
+    return <span className="text-sm font-semibold text-[var(--accent-payment)]">paystack</span>;
   }
 
-  return <Building2 className="h-5 w-5 text-[var(--text-light)]" strokeWidth={1.8} />;
+  return <Landmark className="h-5 w-5 text-[var(--text-light)]" strokeWidth={1.8} />;
 }
 
 export default function CheckoutPaymentMethod({
@@ -49,12 +44,10 @@ export default function CheckoutPaymentMethod({
 
   return (
     <section className="overflow-hidden rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] shadow-sm">
-      <div className="border-b border-[var(--border-default)] px-5 py-4">
-        <h2 className="text-lg font-semibold text-[var(--text-primary)]">Payment Method</h2>
-      </div>
+      <div className="px-6 py-6">
+        <h2 className="text-sm font-semibold text-[var(--text-primary)]">Payment Method</h2>
 
-      <div className="space-y-4 px-5 py-5">
-        <div className="space-y-2">
+        <div className="mt-5 space-y-3">
           {checkoutPaymentMethods.map((method) => {
             const isSelected = method.id === selectedMethod;
 
@@ -62,7 +55,7 @@ export default function CheckoutPaymentMethod({
               <label
                 key={method.id}
                 className={cn(
-                  "flex cursor-pointer items-center gap-4 rounded-md border px-4 py-3 transition-colors",
+                  "flex h-[60px] cursor-pointer items-center gap-3 rounded-md border px-3 transition-colors",
                   isSelected
                     ? "border-[var(--accent-payment)] bg-[color-mix(in_srgb,var(--accent-payment)_8%,var(--bg-surface))]"
                     : "border-[var(--border-default)] bg-[var(--bg-surface)] hover:border-[var(--border-strong)]",
@@ -76,10 +69,8 @@ export default function CheckoutPaymentMethod({
                 />
 
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-sm font-semibold text-[var(--text-primary)]">{method.title}</span>
-                  </div>
-                  <p className="mt-1 text-xs text-[var(--text-muted)]">{method.description}</p>
+                  <p className="truncate text-sm font-medium text-[var(--text-primary)]">{method.title}</p>
+                  <p className="mt-1 truncate text-[10px] text-[var(--text-muted)]">{method.description}</p>
                 </div>
 
                 <span className="ml-auto shrink-0 text-[var(--text-light)]">
@@ -91,37 +82,37 @@ export default function CheckoutPaymentMethod({
         </div>
 
         {showCardFields ? (
-          <div className="space-y-3 rounded-md border border-[var(--border-default)] bg-[var(--bg-base)] p-4">
-            <div className="grid gap-3">
+          <div className="mt-6 border-t border-[var(--border-default)] pt-6">
+            <div className="grid gap-4">
               <label className="block">
-                <span className="text-xs text-[var(--text-muted)]">Card Number</span>
+                <span className="sr-only">Card Number</span>
                 <input
                   {...register("cardNumber")}
                   inputMode="numeric"
-                  placeholder="4242 4242 4242 4242"
-                  className="mt-1 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-light)] focus:border-[var(--accent-payment)]"
+                  placeholder="•••• •••• •••• 4242"
+                  className="h-10 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-9 text-sm font-medium text-[var(--text-primary)] outline-none placeholder:text-[var(--text-primary)] focus:border-[var(--accent-payment)]"
                 />
                 {cardNumberError ? <p className="mt-1 text-xs text-[var(--state-error)]">{cardNumberError}</p> : null}
               </label>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-xs text-[var(--text-muted)]">Expiry</span>
+                  <span className="sr-only">Expiry</span>
                   <input
                     {...register("cardExpiry")}
                     placeholder="12/25"
-                    className="mt-1 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-light)] focus:border-[var(--accent-payment)]"
+                    className="h-10 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-2.5 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-primary)] focus:border-[var(--accent-payment)]"
                   />
                   {cardExpiryError ? <p className="mt-1 text-xs text-[var(--state-error)]">{cardExpiryError}</p> : null}
                 </label>
 
                 <label className="block">
-                  <span className="text-xs text-[var(--text-muted)]">CVV</span>
+                  <span className="sr-only">CVV</span>
                   <input
                     {...register("cardCvv")}
                     inputMode="numeric"
                     placeholder="•••"
-                    className="mt-1 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-3 py-2 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-light)] focus:border-[var(--accent-payment)]"
+                    className="h-10 w-full rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-9 text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-primary)] focus:border-[var(--accent-payment)]"
                   />
                   {cardCvvError ? <p className="mt-1 text-xs text-[var(--state-error)]">{cardCvvError}</p> : null}
                 </label>
@@ -129,14 +120,14 @@ export default function CheckoutPaymentMethod({
             </div>
           </div>
         ) : (
-          <div className="rounded-md border border-dashed border-[var(--border-default)] bg-[var(--bg-base)] px-4 py-4 text-sm text-[var(--text-muted)]">
+          <div className="mt-6 rounded-md border border-dashed border-[var(--border-default)] bg-[var(--bg-base)] px-4 py-4 text-sm text-[var(--text-muted)]">
             Payment details will be confirmed after the chosen gateway opens.
           </div>
         )}
 
         <button
           type="submit"
-          className="inline-flex h-12 w-full items-center justify-center rounded-md bg-[var(--accent-payment)] px-4 text-sm font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
+          className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-md bg-[var(--accent-payment)] px-4 text-base font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
         >
           <Lock className="h-4 w-4" strokeWidth={1.8} />
           <span className="ml-2">Pay {payLabel}</span>
@@ -144,11 +135,10 @@ export default function CheckoutPaymentMethod({
 
         <button
           type="button"
-          className="inline-flex h-11 w-full items-center justify-center rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-sm font-semibold text-[var(--text-primary)] shadow-sm transition-colors hover:bg-[var(--bg-base)]"
+          className="mt-4 inline-flex h-10 w-full items-center justify-center rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] text-sm font-medium text-[var(--text-primary)] shadow-sm transition-colors hover:bg-[var(--bg-base)]"
         >
           Request Proforma Invoice
         </button>
-
       </div>
     </section>
   );

@@ -16,6 +16,8 @@
 - `app/(store)/` — Stores directory (`/stores`) and individual store pages (`/stores/[slug]`). Static with mock/API data.
 - `app/(product)/` — Individual product pages (`/stores/[slug]/products/[productSlug]`). Static with mock/API data.
 - `app/(commerce)/` — Cart (`/cart`) and Checkout (`/checkout`). Driven by Zustand cart store.
+- `app/agents/` — Become an Agent application page. Frontend-only static marketing and
+  registration flow.
 - `components/` — All UI components. No data fetching inside components — data is passed as props or read from Zustand.
 - `store/` — Zustand store slices (cart, currency, UI).
 - `lib/` — Utility functions, mock data, constants. No server-side logic.
@@ -41,6 +43,9 @@ Current implementation files live under `src/`, so these boundaries map to
   `CheckoutSection`, `CheckoutTextField`, `CheckoutTextareaField`,
   `CheckoutDeliveryMethods`, `CheckoutOrderSummary`, and `CheckoutPaymentMethod`.
 - Checkout totals are derived from the flat cart state and selected delivery method via `lib/checkout.ts`.
+- Become an Agent pages compose reusable sections: `AgentHero`, `AgentTrustStrip`,
+  `AgentBenefits`, `AgentCommissionTiers`, `AgentRegistrationForm`, and `AgentFaq`.
+  The registration form owns its frontend-only React Hook Form/Zod validation.
 
 ## State Model
 

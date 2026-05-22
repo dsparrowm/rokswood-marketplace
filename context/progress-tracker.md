@@ -4,7 +4,7 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Checkout implementation complete
+Become an Agent page refinement complete
 
 ## Current Goal
 
@@ -51,6 +51,16 @@ Checkout implementation complete
 - Secure checkout route implemented at `/checkout` with shipping, billing, delivery, notes, order summary, and payment sections
 - Checkout page reuses cart data to render grouped store items and derived totals with live EUR conversion
 - Checkout implementation lint and production build verification completed
+- Checkout payment method section refined to match the provided payment-method reference image
+- Become an Agent product scope added to `project-overview.md`
+- Become an Agent component boundaries added to `architecture.md`
+- Become an Agent page UI pattern added to `ui-context.md`
+- `/agents` route and reusable agent page sections implemented
+- Agent registration form implemented with React Hook Form and Zod validation
+- Footer quick links now route Become an Agent to `/agents`
+- Become an Agent implementation lint and TypeScript verification completed
+- Become an Agent desktop hero now fills the first viewport below the sticky navbar
+- Enterprise Partner commission tier now renders as a dark card matching the reference
 
 ## In Progress
 
@@ -83,6 +93,7 @@ Checkout implementation complete
 - Individual product pages are statically generated from enriched typed mock product data
 - Product detail sections are reusable presentational components that receive typed product data via props
 - Checkout sections are reusable presentational components that receive typed form and cart summary data via props
+- Become an Agent page uses static presentational sections plus a colocated client registration form for frontend-only validation
 
 ## Session Notes
 
@@ -94,3 +105,8 @@ Checkout implementation complete
 - Mobile refinement verification passed with `npm run lint` and `npm run build`
 - Product page verification passed with `npm run lint` and `npm run build`
 - Checkout verification passed with `pnpm lint`, `pnpm build`, and live browser inspection at `/checkout`
+- Payment method reference comparison completed; option rows, card fields, and payment actions were aligned with the provided design
+- Become an Agent verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
+- `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
+- Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected
+- Become an Agent refinement verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`

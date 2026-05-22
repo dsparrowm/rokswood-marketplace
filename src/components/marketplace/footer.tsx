@@ -1,6 +1,11 @@
 import Link from "next/link";
 
-const quickLinks = ["Stores Directory", "Support Center", "Become an Agent", "Track Order"];
+const quickLinks = [
+  { label: "Stores Directory", href: "/stores" },
+  { label: "Support Center", href: "/support" },
+  { label: "Become an Agent", href: "/agents" },
+  { label: "Track Order", href: "/track-order" },
+];
 
 function FooterLogo() {
   return (
@@ -37,9 +42,9 @@ export default function Footer() {
             <h2 className="text-sm font-bold text-[var(--text-primary)]">Quick Links</h2>
             <ul className="mt-6 space-y-4 text-sm text-[var(--text-muted)]">
               {quickLinks.map((link) => (
-                <li key={link}>
-                  <Link href="/stores" className="transition-colors hover:text-[var(--text-primary)]">
-                    {link}
+                <li key={link.label}>
+                  <Link href={link.href} className="transition-colors hover:text-[var(--text-primary)]">
+                    {link.label}
                   </Link>
                 </li>
               ))}
