@@ -4,7 +4,7 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Track order implementation complete
+Stores directory backend integration complete
 
 ## Current Goal
 
@@ -83,6 +83,9 @@ Track order implementation complete
 - Track Order responsive layout implemented with a compact lookup-first mobile flow and a two-column desktop presentation
 - Track Order mock shipment data added in `src/lib/data/order-tracking.ts`
 - Track Order production build verification completed
+- Stores directory now hydrates from the backend public stores API through an env-configured base URL
+- Store cards now merge backend store metadata with the existing local branding defaults for fields the backend does not provide
+- `/stores` now renders the backend-provided store count instead of assuming a static six-store catalogue
 
 ## In Progress
 
@@ -121,6 +124,7 @@ Track order implementation complete
 - Agent Login uses a dedicated portal shell rather than the public buyer navbar/footer to match approved-agent portal access
 - Agent Login keeps dummy credentials colocated with the form because no real auth boundary exists in the frontend-only v1
 - Track Order uses static mock shipment data because v1 has no backend order lookup service
+- Store directory data now comes from the backend public stores API, with local store metadata retained as fallback presentation data
 
 ## Session Notes
 

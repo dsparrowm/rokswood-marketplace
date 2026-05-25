@@ -1,4 +1,5 @@
-import type { StoreDetailData } from "@/types/store";
+import { fetchMarketplaceApi } from "@/lib/backend";
+import type { StoreCardData, StoreDetailData } from "@/types/store";
 
 export const stores: StoreDetailData[] = [
   {
@@ -352,6 +353,85 @@ export const stores: StoreDetailData[] = [
       "Talk to our fabrication specialists for help choosing prefabricated steel components and assemblies.",
   },
 ];
+
+type BackendStoreListItem = {
+  id: string;
+  name: string;
+  slug: string;
+  logoUrl?: string | null;
+  briefDescription?: string | null;
+  productHighlights?: string[] | null;
+  countryCodes?: string[] | null;
+};
+
+type BackendStoreListResponse = {
+  status: boolean;
+  message: string;
+  data: {
+    items: BackendStoreListItem[];
+    page: number;
+    limit: number;
+    total: number;
+  };
+};
+
+const storeCardDefaults = new Map(stores.map((store) => [store.slug, store]));
+
+function mergeStoreCardData(item: BackendStoreListItem): StoreCardData {
+  const defaults = storeCardDefaults.get(item.slug);
+  const highlights = item.productHighlights?.filter(Boolean) ?? [];
+
+  return {
+    slug: item.slug,
+    name: item.name,
+    category: defaults?.category ?? "Store",
+    description:
+      item.briefDescription?.trim() ||
+      defaults?.description ||
+      "Browse specialised industrial and procurement catalogues.",
+    tags: highlights.length > 0 ? highlights : defaults?.tags ?? [],
+    href: defaults?.href ?? `/stores/${item.slug}`,
+    accentClassName:
+      defaults?.accentClassName ?? "border-t-[var(--accent-primary)] text-[var(--accent-primary)]",
+    icon: defaults?.icon ?? "gears",
+    logoSrc: item.logoUrl?.trim() || defaults?.logoSrc,
+    logoAlt: `${item.name} logo`,
+  };
+}
+
+export function mergeStoreDirectoryCards(items: BackendStoreListItem[]) {
+  return items.map((item) => mergeStoreCardData(item));
+}
+
+export async function getStoreDirectoryCards() {
+  const response = await fetchMarketplaceApi<BackendStoreListResponse>(
+    "/public/stores?limit=100&page=1",
+    { revalidate: 300 },
+  );
+
+  if (!response?.data || !Array.isArray(response.data.items)) {
+    return {
+      stores: stores.map((store) => ({
+        slug: store.slug,
+        name: store.name,
+        category: store.category,
+        description: store.description,
+        tags: store.tags,
+        href: store.href,
+        accentClassName: store.accentClassName,
+        icon: store.icon,
+        logoSrc: store.logoSrc,
+        logoAlt: store.logoAlt,
+      })),
+      total: stores.length,
+    };
+  }
+
+  return {
+    stores: mergeStoreDirectoryCards(response.data.items),
+    total: Number(response.data.total ?? response.data.items.length),
+  };
+}
 
 export function getStoreBySlug(slug: string) {
   return stores.find((store) => store.slug === slug);

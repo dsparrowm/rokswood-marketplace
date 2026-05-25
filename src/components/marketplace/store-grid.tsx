@@ -1,7 +1,12 @@
 import StoreCard from "@/components/marketplace/store-card";
-import { stores } from "@/lib/data/stores";
+import type { StoreCardData } from "@/types/store";
 
-export default function StoreGrid() {
+type StoreGridProps = {
+  stores: StoreCardData[];
+  storeCount?: number;
+};
+
+export default function StoreGrid({ stores, storeCount }: StoreGridProps) {
   return (
     <section className="bg-[var(--bg-base)] px-4 py-20 sm:px-6 lg:px-10 lg:py-32">
       <div className="mx-auto max-w-[1360px]">
@@ -14,6 +19,11 @@ export default function StoreGrid() {
               Navigate our specialized stores tailored for distinct industrial,
               energy, and structural needs.
             </p>
+            {storeCount !== undefined ? (
+              <p className="mt-4 inline-flex rounded-full border border-[var(--border-default)] bg-[var(--bg-tag)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                {storeCount} stores available
+              </p>
+            ) : null}
           </div>
 
           <div className="flex items-center gap-3">
@@ -40,7 +50,7 @@ export default function StoreGrid() {
 
         <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3 xl:gap-9">
           {stores.map((store) => (
-            <StoreCard key={store.name} store={store} />
+            <StoreCard key={store.slug} store={store} />
           ))}
         </div>
       </div>

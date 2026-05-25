@@ -26,7 +26,7 @@
   shipment status, timeline updates, and support details.
 - `components/` — All UI components. No data fetching inside components — data is passed as props or read from Zustand.
 - `store/` — Zustand store slices (cart, currency, UI).
-- `lib/` — Utility functions, mock data, constants. No server-side logic.
+- `lib/` — Utility functions, mock data, constants, and env-backed backend helpers.
 - `types/` — Shared TypeScript types and interfaces.
 
 Current implementation files live under `src/`, so these boundaries map to
@@ -35,6 +35,7 @@ Current implementation files live under `src/`, so these boundaries map to
 ## Component Boundaries
 - Store listing cards are reusable presentational components. Store grid sections
   own layout and pass typed store data into `StoreCard`.
+- The `/stores` page fetches backend-backed directory data via an env-configured helper and passes typed card props into the shared grid; the homepage continues to render the local static store seed.
 - Individual store pages compose reusable presentational sections from typed store
   detail data: `StoreHero`, `StoreFilterSidebar`, `StoreProductCard`,
   `StoreTrustRow`, and `StoreTechnicalCta`.
@@ -70,11 +71,10 @@ Current implementation files live under `src/`, so these boundaries map to
 
 ## Data Source
 
-- Product and store data is served from a **static JSON mock data layer** (`lib/data/`) for v1.
-- In future iterations, this is replaced by API calls to a backend service without changing component interfaces.
+- Product detail data is served from the local static mock data layer (`lib/data/`) for v1.
+- The stores directory page hydrates from the backend public stores API through an env-configured base URL, while local store definitions provide fallback branding, icons, and routing metadata for fields the backend does not supply.
 - All data shapes are typed — components consume typed props, not raw fetch responses.
-- Store directory and individual store page mock data currently live in
-  `src/lib/data/stores.ts` and are shared by `/stores` and `/stores/[slug]`.
+- Store detail seed data currently live in `src/lib/data/stores.ts` and are shared by `/stores/[slug]`; the `/stores` directory page merges backend data with the same local defaults.
 - Individual product detail data is resolved from `src/lib/data/products.ts`,
   which enriches store catalogue products with gallery, technical summary,
   specifications, resources, and procurement-page metadata.
