@@ -21,6 +21,7 @@ export type StoreProduct = {
   price: number | null;
   image: string;
   imageAlt: string;
+  href?: string;
 };
 
 export type StoreTrustBadge = {

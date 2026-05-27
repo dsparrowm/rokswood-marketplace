@@ -90,6 +90,9 @@ Stores directory backend integration complete
 - Backend stores integration for `/stores` verified against the public `/public/stores` response shape
 - `/stores` now uses a TanStack Query hook, a local API route, and a query provider for backend store state
 - Public stores fetch now bypasses browser and route caching so deactivations reflect immediately on refresh
+- Public store detail pages now fall back to backend directory branding when the public detail record is missing
+- Dynamic store and product segments now include loading and error boundaries
+- Public product detail pages now fall back to backend listing data when the detailed product record is missing
 
 ## In Progress
 

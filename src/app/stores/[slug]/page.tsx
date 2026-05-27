@@ -5,7 +5,9 @@ import StoreHero from "@/components/store/store-hero";
 import StoreProductBrowser from "@/components/store/store-product-browser";
 import StoreTechnicalCta from "@/components/store/store-technical-cta";
 import StoreTrustRow from "@/components/store/store-trust-row";
-import { getStoreBySlug, stores } from "@/lib/data/stores";
+import { getPublicStorePageData } from "@/lib/data/stores";
+
+export const dynamic = "force-dynamic";
 
 type StorePageProps = {
   params: Promise<{
@@ -14,14 +16,12 @@ type StorePageProps = {
 };
 
 export function generateStaticParams() {
-  return stores.map((store) => ({
-    slug: store.slug,
-  }));
+  return [];
 }
 
 export default async function StorePage({ params }: StorePageProps) {
   const { slug } = await params;
-  const store = getStoreBySlug(slug);
+  const store = await getPublicStorePageData(slug);
 
   if (!store) {
     notFound();

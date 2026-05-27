@@ -49,7 +49,7 @@ export default function StoreProductCard({
             {product.price === null ? "Request Quote" : formatPrice(product.price)}
           </p>
           <Link
-            href={`/stores/${storeSlug}/products/${product.slug}`}
+            href={product.href ?? `/stores/${storeSlug}/products/${product.slug}`}
             className="inline-flex items-center gap-2 whitespace-nowrap text-sm font-semibold text-[var(--accent-primary)]"
           >
             View Details

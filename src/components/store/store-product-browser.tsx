@@ -24,6 +24,74 @@ function FilterIcon() {
 }
 
 export default function StoreProductBrowser({ store }: StoreProductBrowserProps) {
+  if (store.products.length === 0) {
+    return (
+      <section className="border-b border-[var(--border-default)] bg-[var(--bg-base)] px-4 py-8 sm:px-6 sm:py-12 lg:px-10">
+        <div className="mx-auto flex max-w-[1360px] flex-col gap-8 lg:flex-row">
+          <div className="hidden lg:block">
+            <StoreFilterSidebar
+              categories={store.categories}
+              availability={store.availability}
+              segments={store.segments}
+              idPrefix="desktop"
+            />
+          </div>
+
+          <div className="min-w-0 flex-1">
+            <form className="flex gap-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] p-2 shadow-sm sm:gap-3">
+              <label className="flex min-h-10 flex-1 items-center gap-3 px-1 sm:px-2">
+                <SearchIcon />
+                <span className="sr-only">Search products</span>
+                <input
+                  type="search"
+                  placeholder={store.searchPlaceholder}
+                  className="min-w-0 flex-1 bg-transparent text-sm text-[var(--text-primary)] outline-none placeholder:text-[var(--text-muted)]"
+                />
+              </label>
+              <button
+                type="submit"
+                className="hidden h-10 rounded-md bg-[var(--accent-primary)] px-7 text-sm font-semibold text-white sm:inline-flex sm:items-center"
+              >
+                Search
+              </button>
+            </form>
+
+            <details className="mt-3 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] shadow-sm lg:hidden">
+              <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between px-4 text-sm font-semibold text-[var(--text-primary)] marker:hidden">
+                <span className="inline-flex items-center gap-2">
+                  <FilterIcon />
+                  Filters
+                </span>
+                <span className="text-xs font-medium text-[var(--text-muted)]">Category, stock, segment</span>
+              </summary>
+              <div className="border-t border-[var(--border-default)]">
+                <StoreFilterSidebar
+                  categories={store.categories}
+                  availability={store.availability}
+                  segments={store.segments}
+                  idPrefix="mobile"
+                  framed={false}
+                />
+              </div>
+            </details>
+
+            <div className="mt-5 rounded-2xl border border-dashed border-[var(--border-default)] bg-[var(--bg-surface)] px-6 py-14 text-center shadow-sm">
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-[var(--text-muted)]">
+                Catalogue pending
+              </p>
+              <h2 className="mt-3 text-2xl font-bold tracking-[-0.01em] text-[var(--text-primary)] sm:text-3xl">
+                No published products yet.
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-[var(--text-muted)] sm:text-base">
+                This store has been created and branded, but there are no published products available yet. Check back soon or contact the sales team for procurement support.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="border-b border-[var(--border-default)] bg-[var(--bg-base)] px-4 py-8 sm:px-6 sm:py-12 lg:px-10">
       <div className="mx-auto flex max-w-[1360px] flex-col gap-8 lg:flex-row">

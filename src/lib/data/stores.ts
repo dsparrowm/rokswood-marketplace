@@ -375,7 +375,214 @@ type BackendStoreListResponse = {
   };
 };
 
+type BackendStoreDetailItem = BackendStoreListItem & {
+  categoryCount: number;
+  productCount: number;
+};
+
+type BackendStoreDetailResponse = {
+  status: boolean;
+  message: string;
+  data: BackendStoreDetailItem;
+};
+
+type BackendStoreCategory = {
+  id: string;
+  storeId: string;
+  name: string;
+  slug: string;
+  sortOrder: number;
+  isActive: boolean;
+};
+
+type BackendStoreCategoriesResponse = {
+  status: boolean;
+  message: string;
+  data: BackendStoreCategory[];
+};
+
+type BackendStoreProductListItem = {
+  id: string;
+  storeId: string;
+  categoryId?: string | null;
+  displayPrice?: number | null;
+  stockLabel: string;
+  coverImageUrl?: string | null;
+  itemName: string;
+  quantityAvailable?: number | null;
+  viewCount?: number;
+};
+
+type BackendStoreProductsResponse = {
+  status: boolean;
+  message: string;
+  data: {
+    items: BackendStoreProductListItem[];
+    page: number;
+    limit: number;
+    total: number;
+  };
+};
+
+type StoreBrandTheme = Pick<
+  StoreDetailData,
+  "category" | "accentClassName" | "accentTextClassName" | "heroClassName" | "icon"
+>;
+
 const storeCardDefaults = new Map(stores.map((store) => [store.slug, store]));
+
+const fallbackThemes: StoreBrandTheme[] = [
+  {
+    category: "Infrastructure",
+    accentClassName: "border-t-[var(--store-arackteck)] text-[var(--store-arackteck)]",
+    accentTextClassName: "text-[var(--store-arackteck)]",
+    heroClassName: "bg-[linear-gradient(to_right,var(--bg-dark),var(--store-arackteck))]",
+    icon: "gears",
+  },
+  {
+    category: "IoT Tech",
+    accentClassName: "border-t-[var(--store-pulse)] text-[var(--store-pulse)]",
+    accentTextClassName: "text-[var(--store-pulse)]",
+    heroClassName: "bg-[linear-gradient(to_right,var(--bg-dark),var(--store-pulse))]",
+    icon: "pulse",
+  },
+  {
+    category: "Fabrication",
+    accentClassName: "border-t-[var(--store-metals)] text-[var(--store-metals)]",
+    accentTextClassName: "text-[var(--store-metals)]",
+    heroClassName: "bg-[linear-gradient(to_right,var(--bg-dark),var(--store-metals))]",
+    icon: "metals",
+  },
+  {
+    category: "Energy",
+    accentClassName: "border-t-[var(--store-energy)] text-[var(--store-energy)]",
+    accentTextClassName: "text-[var(--store-energy)]",
+    heroClassName: "bg-[linear-gradient(to_right,var(--accent-primary),var(--store-energy-warm),var(--store-energy-lime))]",
+    icon: "energy",
+  },
+  {
+    category: "Manufacturing",
+    accentClassName: "border-t-[var(--store-efab)] text-[var(--store-efab)]",
+    accentTextClassName: "text-[var(--store-efab)]",
+    heroClassName: "bg-[linear-gradient(to_right,var(--bg-dark),var(--store-efab))]",
+    icon: "efab",
+  },
+];
+
+function hashSlug(slug: string) {
+  return Array.from(slug).reduce((hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0, 0);
+}
+
+export function getStoreThemeBySlug(slug: string): StoreBrandTheme {
+  const preset = storeCardDefaults.get(slug);
+
+  if (preset) {
+    return {
+      category: preset.category,
+      accentClassName: preset.accentClassName,
+      accentTextClassName: preset.accentTextClassName,
+      heroClassName: preset.heroClassName,
+      icon: preset.icon,
+    };
+  }
+
+  return fallbackThemes[hashSlug(slug) % fallbackThemes.length];
+}
+
+function fallbackProductImage(slug: string, index: number) {
+  const images = [
+    "/assets/store-products/arackteck-generator.svg",
+    "/assets/store-products/pulse-sensor.svg",
+    "/assets/store-products/metals-panel.svg",
+    "/assets/store-products/energy-inverter.svg",
+    "/assets/store-products/efab-frame.svg",
+  ];
+
+  return images[(hashSlug(slug) + index) % images.length];
+}
+
+function buildStoreProductsFromBackend(storeSlug: string, storeName: string, items: BackendStoreProductListItem[]) {
+  return items.map((item, index) => ({
+    slug: item.id,
+    name: item.itemName,
+    category: item.stockLabel === "RFQ Only" ? "Request Quote" : "Published Product",
+    description:
+      item.stockLabel === "RFQ Only"
+        ? `Request pricing for ${item.itemName} from ${storeName}.`
+        : `${item.itemName} from ${storeName} is available through the public catalogue.`,
+    price: item.displayPrice ?? null,
+    image: item.coverImageUrl?.trim() || fallbackProductImage(storeSlug, index),
+    imageAlt: `${item.itemName} product illustration`,
+    href: `/stores/${storeSlug}/products/${item.id}`,
+  }));
+}
+
+function buildStoreDetailData(
+  store: BackendStoreDetailItem,
+  categories: BackendStoreCategory[],
+  products: BackendStoreProductListItem[],
+): StoreDetailData {
+  const theme = getStoreThemeBySlug(store.slug);
+  const categoryNames = categories.map((category) => category.name.trim()).filter(Boolean);
+  const productHighlights = store.productHighlights?.filter(Boolean) ?? [];
+  const tags = [...new Set([...productHighlights, ...categoryNames])].slice(0, 3);
+  const storeProducts = buildStoreProductsFromBackend(store.slug, store.name, products);
+  const availability = storeProducts.length > 0
+    ? [...new Set(storeProducts.map((product) => (product.price === null ? "RFQ Only" : "In Stock")))]
+    : ["In Stock", "RFQ Only", "Pre-order"];
+
+  return {
+    slug: store.slug,
+    name: store.name,
+    category: theme.category,
+    description:
+      store.briefDescription?.trim() ||
+      productHighlights[0] ||
+      `Browse specialised products from ${store.name}.`,
+    heroDescription:
+      store.briefDescription?.trim() ||
+      `${store.name} is now live in the public marketplace. Browse the active catalogue and request procurement support where needed.`,
+    tags: tags.length > 0 ? tags : [`${store.name} Store`],
+    href: `/stores/${store.slug}`,
+    accentClassName: theme.accentClassName,
+    accentTextClassName: theme.accentTextClassName,
+    heroClassName: theme.heroClassName,
+    icon: theme.icon,
+    logoSrc: store.logoUrl?.trim() || undefined,
+    logoAlt: `${store.name} logo`,
+    searchPlaceholder: `Search ${store.name} products...`,
+    categories: categoryNames.length > 0 ? categoryNames : ["General Catalogue"],
+    availability,
+    segments: ["All Segments", "Industrial", "Commercial", "Enterprise"],
+    products: storeProducts,
+    trustBadges: [
+      {
+        title: "Brand Verified",
+        description: store.logoUrl ? "Official logo provided" : "Published store profile",
+        icon: "certified",
+      },
+      {
+        title: "Active Catalogue",
+        description: `${store.productCount} published products`,
+        icon: "factory",
+      },
+      {
+        title: "Public Listing",
+        description: `${store.categoryCount} active categories`,
+        icon: "delivery",
+      },
+      {
+        title: "Technical Support",
+        description: "Contact sales for procurement help",
+        icon: "support",
+      },
+    ],
+    ctaTitle: `Need ${store.name} assistance?`,
+    ctaDescription:
+      store.briefDescription?.trim() ||
+      `Talk to our sales team for guidance on ${store.name} products, quotations, and procurement support.`,
+  };
+}
 
 function mergeStoreCardData(item: BackendStoreListItem): StoreCardData {
   const defaults = storeCardDefaults.get(item.slug);
@@ -435,4 +642,85 @@ export async function getStoreDirectoryCards() {
 
 export function getStoreBySlug(slug: string) {
   return stores.find((store) => store.slug === slug);
+}
+
+function buildFallbackStoreDetailFromCard(store: StoreCardData): StoreDetailData {
+  const theme = getStoreThemeBySlug(store.slug);
+
+  return {
+    slug: store.slug,
+    name: store.name,
+    category: store.category || theme.category,
+    description: store.description,
+    heroDescription: store.description,
+    tags: store.tags.length > 0 ? store.tags.slice(0, 3) : [`${store.name} Store`],
+    href: store.href,
+    accentClassName: store.accentClassName || theme.accentClassName,
+    accentTextClassName: theme.accentTextClassName,
+    heroClassName: theme.heroClassName,
+    icon: store.icon || theme.icon,
+    logoSrc: store.logoSrc,
+    logoAlt: store.logoAlt || `${store.name} logo`,
+    searchPlaceholder: `Search ${store.name} products...`,
+    categories: [store.category || theme.category],
+    availability: ["In Stock", "RFQ Only", "Pre-order"],
+    segments: ["All Segments", "Industrial", "Commercial", "Enterprise"],
+    products: [],
+    trustBadges: [
+      { title: "Brand Verified", description: "Published store profile", icon: "certified" },
+      { title: "Active Catalogue", description: "No published products yet", icon: "factory" },
+      { title: "Public Listing", description: "Available in the marketplace", icon: "delivery" },
+      { title: "Technical Support", description: "Contact sales for procurement help", icon: "support" },
+    ],
+    ctaTitle: `Need ${store.name} assistance?`,
+    ctaDescription: store.description,
+  };
+}
+
+export async function getPublicStoreBySlug(slug: string) {
+  const response = await fetchMarketplaceApi<BackendStoreDetailResponse>(
+    `/public/stores/${slug}`,
+    { cache: "no-store" },
+  );
+
+  return response?.data ?? null;
+}
+
+export async function getPublicStoreCategories(slug: string) {
+  const response = await fetchMarketplaceApi<BackendStoreCategoriesResponse>(
+    `/public/stores/${slug}/categories`,
+    { cache: "no-store" },
+  );
+
+  return response?.data ?? [];
+}
+
+export async function getPublicStoreProducts(slug: string) {
+  const response = await fetchMarketplaceApi<BackendStoreProductsResponse>(
+    `/public/stores/${slug}/products?limit=100&page=1`,
+    { cache: "no-store" },
+  );
+
+  return response?.data.items ?? [];
+}
+
+export async function getPublicStorePageData(slug: string) {
+  const [store, categories, products, directory] = await Promise.all([
+    getPublicStoreBySlug(slug),
+    getPublicStoreCategories(slug),
+    getPublicStoreProducts(slug),
+    getStoreDirectoryCards(),
+  ]);
+
+  if (store) {
+    return buildStoreDetailData(store, categories, products);
+  }
+
+  const directoryStore = directory.stores.find((item) => item.slug === slug);
+
+  if (directoryStore) {
+    return buildFallbackStoreDetailFromCard(directoryStore);
+  }
+
+  return getStoreBySlug(slug);
 }

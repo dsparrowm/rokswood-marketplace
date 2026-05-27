@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/marketplace/footer";
 import Nav from "@/components/marketplace/nav";
 import ProductDetailLayout from "@/components/product/product-detail-layout";
-import { getProductDetailBySlug, getProductsForStaticParams } from "@/lib/data/products";
+import { getProductDetailBySlug } from "@/lib/data/products";
+
+export const dynamic = "force-dynamic";
 
 type ProductPageProps = {
   params: Promise<{
@@ -12,12 +14,12 @@ type ProductPageProps = {
 };
 
 export function generateStaticParams() {
-  return getProductsForStaticParams();
+  return [];
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug, productSlug } = await params;
-  const detail = getProductDetailBySlug(slug, productSlug);
+  const detail = await getProductDetailBySlug(slug, productSlug);
 
   if (!detail) {
     notFound();
