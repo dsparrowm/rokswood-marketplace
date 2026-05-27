@@ -5,6 +5,7 @@
 - Keep components small and single-purpose — one component per file, one concern per file
 - Fix root causes, do not layer conditional hacks or workarounds
 - Do not mix data-fetching logic and rendering logic in the same component
+- Prefer React Query hooks for server/API state and mutations; keep fetch logic out of page and leaf components when possible
 - Prefer explicit over implicit — name things clearly, avoid abbreviations in identifiers
 - Delete dead code rather than commenting it out
 
@@ -40,7 +41,7 @@
 ## Components
 
 - Presentational components receive all data via props — no store reads inside them
-- Container components (page-level or section-level) read from Zustand or receive data from the page
+- Container components (page-level or section-level) read from Zustand, React Query hooks, or receive data from the page
 - Never read from the cart store inside a product card — pass cart state as a prop if needed
 - Use `cn()` (from `lib/utils.ts`) for conditional class merging — not string concatenation
 

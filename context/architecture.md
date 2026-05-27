@@ -25,6 +25,7 @@
 - `app/track-order/` — Order tracking page. Frontend-only static lookup view for
   shipment status, timeline updates, and support details.
 - `components/` — All UI components. No data fetching inside components — data is passed as props or read from Zustand.
+- `lib/hooks/` — TanStack Query hooks for server state, mutations, and cache updates.
 - `store/` — Zustand store slices (cart, currency, UI).
 - `lib/` — Utility functions, mock data, constants, and env-backed backend helpers.
 - `types/` — Shared TypeScript types and interfaces.
@@ -36,6 +37,7 @@ Current implementation files live under `src/`, so these boundaries map to
 - Store listing cards are reusable presentational components. Store grid sections
   own layout and pass typed store data into `StoreCard`.
 - The `/stores` page fetches backend-backed directory data via an env-configured helper and passes typed card props into the shared grid; the homepage continues to render the local static store seed.
+- Server-backed pages and feature sections should read data through React Query hooks in `lib/hooks/` rather than ad hoc `useEffect` fetch logic in the component tree.
 - Individual store pages compose reusable presentational sections from typed store
   detail data: `StoreHero`, `StoreFilterSidebar`, `StoreProductCard`,
   `StoreTrustRow`, and `StoreTechnicalCta`.
@@ -67,6 +69,7 @@ Current implementation files live under `src/`, so these boundaries map to
 - **Cart state (Zustand)**: Items keyed by product ID — `{ id, productId, productSlug, storeSlug, sku, name, description, price, quantity, image, imageAlt, category }`. Persisted to localStorage with seeded mock items on first load and grouped by store for display.
 - **Currency state (Zustand)**: Selected display currency (USD default). Exchange rate fetched from a public rates API.
 - **UI state (Zustand)**: Mobile menu open, filter sidebar open, active product tab.
+- **Server state (TanStack Query)**: Backend-backed stores, products, checkout metadata, and related API data should be cached, invalidated, and refetched through React Query hooks.
 - **Form state (React Hook Form)**: Checkout form fields — shipping, billing, delivery method, payment method. Not persisted.
 
 ## Data Source

@@ -8,11 +8,12 @@ Stores directory backend integration complete
 
 ## Current Goal
 
-- None
+- Keep the marketplace context aligned with the implementation pattern: React Query for server state, Zustand for client state, and small reusable components.
 
 ## Completed
 
 - UI context read and applied to the base stylesheet
+- Context updated to explicitly prefer React Query hooks for server state and cache management
 - Landing page header component implemented and wired to the homepage
 - Landing page hero component implemented and rendered below the header
 - Landing page stats/trust bar implemented below the hero
@@ -86,6 +87,8 @@ Stores directory backend integration complete
 - Stores directory now hydrates from the backend public stores API through an env-configured base URL
 - Store cards now merge backend store metadata with the existing local branding defaults for fields the backend does not provide
 - `/stores` now renders the backend-provided store count instead of assuming a static six-store catalogue
+- Backend stores integration for `/stores` verified against the public `/public/stores` response shape
+- `/stores` now uses a TanStack Query hook, a local API route, and a query provider for backend store state
 
 ## In Progress
 
