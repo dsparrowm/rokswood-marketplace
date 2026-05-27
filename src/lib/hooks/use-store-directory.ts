@@ -10,6 +10,7 @@ export type StoreDirectoryResponse = {
 
 async function fetchStoreDirectory(): Promise<StoreDirectoryResponse> {
   const response = await fetch("/api/stores", {
+    cache: "no-store",
     headers: {
       Accept: "application/json",
     },
@@ -26,6 +27,8 @@ export function useStoreDirectoryQuery() {
   return useQuery({
     queryKey: ["stores", "directory"],
     queryFn: fetchStoreDirectory,
-    staleTime: 5 * 60 * 1000,
+    staleTime: 0,
+    refetchOnMount: "always",
+    refetchOnWindowFocus: true,
   });
 }

@@ -89,6 +89,7 @@ Stores directory backend integration complete
 - `/stores` now renders the backend-provided store count instead of assuming a static six-store catalogue
 - Backend stores integration for `/stores` verified against the public `/public/stores` response shape
 - `/stores` now uses a TanStack Query hook, a local API route, and a query provider for backend store state
+- Public stores fetch now bypasses browser and route caching so deactivations reflect immediately on refresh
 
 ## In Progress
 

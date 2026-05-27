@@ -406,7 +406,7 @@ export function mergeStoreDirectoryCards(items: BackendStoreListItem[]) {
 export async function getStoreDirectoryCards() {
   const response = await fetchMarketplaceApi<BackendStoreListResponse>(
     "/public/stores?limit=100&page=1",
-    { revalidate: 300 },
+    { cache: "no-store" },
   );
 
   if (!response?.data || !Array.isArray(response.data.items)) {

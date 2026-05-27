@@ -1,4 +1,5 @@
 type MarketplaceApiOptions = {
+  cache?: RequestCache;
   revalidate?: number;
 };
 
@@ -21,6 +22,7 @@ export async function fetchMarketplaceApi<T>(
       headers: {
         Accept: "application/json",
       },
+      ...(options?.cache ? { cache: options.cache } : {}),
       ...(options?.revalidate ? { next: { revalidate: options.revalidate } } : {}),
     });
 
