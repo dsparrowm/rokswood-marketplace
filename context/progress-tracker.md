@@ -16,6 +16,7 @@ Stores directory backend integration complete
 - Store detail category hydration now supports the backend's `{ store, categories }` public categories response shape, preventing valid store detail pages from collapsing into a frontend 404.
 - Marketplace image hydration now normalizes Rokswood blob URLs to HTTPS and allows `blobs.rokswood.com/nestapp-public/**` in Next image optimization so backend product images can render.
 - Store logo rendering now uses `next/image` instead of a raw image element, sharing the same backend blob image policy as product images.
+- Store product card images now use full-bleed cover sizing instead of padded contain sizing so uploaded catalogue photos fill the card media area.
 - UI context read and applied to the base stylesheet
 - Context updated to explicitly prefer React Query hooks for server state and cache management
 - Landing page header component implemented and wired to the homepage

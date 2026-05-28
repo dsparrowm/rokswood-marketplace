@@ -23,13 +23,13 @@ export default function StoreProductCard({
 }: StoreProductCardProps) {
   return (
     <article className="overflow-hidden rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] shadow-sm">
-      <div className="relative flex aspect-[4/1.7] items-center justify-center border-b border-[var(--border-default)] bg-[var(--bg-base)] sm:aspect-[4/2.15]">
+      <div className="relative aspect-[4/1.7] border-b border-[var(--border-default)] bg-[var(--bg-base)] sm:aspect-[4/2.15]">
         <Image
           src={product.image}
           alt={product.imageAlt}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 360px"
-          className="object-contain p-4 sm:p-5"
+          className="object-cover"
         />
       </div>
 
