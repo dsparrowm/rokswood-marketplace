@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { StoreIconName } from "@/types/store";
 
 type StoreIconProps = {
@@ -9,9 +10,11 @@ type StoreIconProps = {
 export default function StoreIcon({ icon, logoSrc, logoAlt }: StoreIconProps) {
   if (logoSrc) {
     return (
-      <img
+      <Image
         src={logoSrc}
         alt={logoAlt ?? "Store logo"}
+        width={48}
+        height={48}
         className="h-10 w-10 object-contain sm:h-12 sm:w-12"
       />
     );

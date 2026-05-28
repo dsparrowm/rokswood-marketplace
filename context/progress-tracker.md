@@ -14,6 +14,8 @@ Stores directory backend integration complete
 
 - Store detail API proxy now accepts the shared `NEXT_PUBLIC_API_URL` backend env as a fallback to `ROKSWOOD_HIVE_BACKEND_API_BASE_URL`, so deployed store pages can reach the same backend base URL convention used by the admin app.
 - Store detail category hydration now supports the backend's `{ store, categories }` public categories response shape, preventing valid store detail pages from collapsing into a frontend 404.
+- Marketplace image hydration now normalizes Rokswood blob URLs to HTTPS and allows `blobs.rokswood.com/nestapp-public/**` in Next image optimization so backend product images can render.
+- Store logo rendering now uses `next/image` instead of a raw image element, sharing the same backend blob image policy as product images.
 - UI context read and applied to the base stylesheet
 - Context updated to explicitly prefer React Query hooks for server state and cache management
 - Landing page header component implemented and wired to the homepage

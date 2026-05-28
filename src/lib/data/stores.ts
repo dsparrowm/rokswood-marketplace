@@ -1,4 +1,5 @@
 import { fetchMarketplaceApi } from "@/lib/backend";
+import { resolveMarketplaceImageSource } from "@/lib/media";
 import type { StoreCardData, StoreDetailData } from "@/types/store";
 
 export const stores: StoreDetailData[] = [
@@ -515,7 +516,7 @@ function buildStoreProductsFromBackend(storeSlug: string, storeName: string, ite
         ? `Request pricing for ${item.itemName} from ${storeName}.`
         : `${item.itemName} from ${storeName} is available through the public catalogue.`,
     price: item.displayPrice ?? null,
-    image: item.coverImageUrl?.trim() || fallbackProductImage(storeSlug, index),
+    image: resolveMarketplaceImageSource(item.coverImageUrl) || fallbackProductImage(storeSlug, index),
     imageAlt: `${item.itemName} product illustration`,
     href: `/stores/${storeSlug}/products/${item.id}`,
   }));
@@ -556,7 +557,7 @@ function buildStoreDetailData(
     accentTextClassName: theme.accentTextClassName,
     heroClassName: theme.heroClassName,
     icon: theme.icon,
-    logoSrc: store.logoUrl?.trim() || undefined,
+    logoSrc: resolveMarketplaceImageSource(store.logoUrl),
     logoAlt: `${store.name} logo`,
     searchPlaceholder: `Search ${store.name} products...`,
     categories: categoryNames.length > 0 ? categoryNames : ["General Catalogue"],
@@ -608,7 +609,7 @@ function mergeStoreCardData(item: BackendStoreListItem): StoreCardData {
     href: `/stores/${item.slug}`,
     accentClassName: getStoreThemeBySlug(item.slug).accentClassName,
     icon: getStoreThemeBySlug(item.slug).icon,
-    logoSrc: item.logoUrl?.trim() || undefined,
+    logoSrc: resolveMarketplaceImageSource(item.logoUrl),
     logoAlt: `${item.name} logo`,
   };
 }

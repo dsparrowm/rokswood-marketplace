@@ -1,7 +1,15 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "blobs.rokswood.com",
+        pathname: "/nestapp-public/**",
+      },
+    ],
+  },
 };
 
 export default nextConfig;

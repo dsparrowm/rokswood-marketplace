@@ -1,5 +1,6 @@
 import { fetchMarketplaceApi } from "@/lib/backend";
 import { getStoreThemeBySlug, stores } from "@/lib/data/stores";
+import { resolveMarketplaceImageSource } from "@/lib/media";
 import type { ProductDetailData } from "@/types/product";
 import type { StoreDetailData, StoreProduct } from "@/types/store";
 
@@ -199,13 +200,7 @@ function resolveRenderableProductImage(
   storeSlug: string,
   index: number,
 ) {
-  const trimmedSource = source?.trim();
-
-  if (trimmedSource?.startsWith("/")) {
-    return trimmedSource;
-  }
-
-  return fallbackProductImage(storeSlug, index);
+  return resolveMarketplaceImageSource(source) || fallbackProductImage(storeSlug, index);
 }
 
 function buildBackendProductDetail(
@@ -397,7 +392,7 @@ function buildResolvedStoreFromBackend(
     accentTextClassName: theme.accentTextClassName,
     heroClassName: theme.heroClassName,
     icon: theme.icon,
-    logoSrc: backendStore.logoUrl?.trim() || undefined,
+    logoSrc: resolveMarketplaceImageSource(backendStore.logoUrl),
     logoAlt: `${backendStore.name} logo`,
     searchPlaceholder: `Search ${backendStore.name} products...`,
     categories: categoryNames,
