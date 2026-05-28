@@ -585,23 +585,20 @@ function buildStoreDetailData(
 }
 
 function mergeStoreCardData(item: BackendStoreListItem): StoreCardData {
-  const defaults = storeCardDefaults.get(item.slug);
   const highlights = item.productHighlights?.filter(Boolean) ?? [];
 
   return {
     slug: item.slug,
     name: item.name,
-    category: defaults?.category ?? "Store",
+    category: highlights[0] ?? "Store",
     description:
       item.briefDescription?.trim() ||
-      defaults?.description ||
       "Browse specialised industrial and procurement catalogues.",
-    tags: highlights.length > 0 ? highlights : defaults?.tags ?? [],
-    href: defaults?.href ?? `/stores/${item.slug}`,
-    accentClassName:
-      defaults?.accentClassName ?? "border-t-[var(--accent-primary)] text-[var(--accent-primary)]",
-    icon: defaults?.icon ?? "gears",
-    logoSrc: item.logoUrl?.trim() || defaults?.logoSrc,
+    tags: highlights,
+    href: `/stores/${item.slug}`,
+    accentClassName: getStoreThemeBySlug(item.slug).accentClassName,
+    icon: getStoreThemeBySlug(item.slug).icon,
+    logoSrc: item.logoUrl?.trim() || undefined,
     logoAlt: `${item.name} logo`,
   };
 }
@@ -617,21 +614,7 @@ export async function getStoreDirectoryCards() {
   );
 
   if (!response?.data || !Array.isArray(response.data.items)) {
-    return {
-      stores: stores.map((store) => ({
-        slug: store.slug,
-        name: store.name,
-        category: store.category,
-        description: store.description,
-        tags: store.tags,
-        href: store.href,
-        accentClassName: store.accentClassName,
-        icon: store.icon,
-        logoSrc: store.logoSrc,
-        logoAlt: store.logoAlt,
-      })),
-      total: stores.length,
-    };
+    return { stores: [], total: 0 };
   }
 
   return {
@@ -642,74 +625,6 @@ export async function getStoreDirectoryCards() {
 
 export function getStoreBySlug(slug: string) {
   return stores.find((store) => store.slug === slug);
-}
-
-function buildFallbackStoreDetailFromCard(store: StoreCardData): StoreDetailData {
-  const theme = getStoreThemeBySlug(store.slug);
-
-  return {
-    slug: store.slug,
-    name: store.name,
-    category: store.category || theme.category,
-    description: store.description,
-    heroDescription: store.description,
-    tags: store.tags.length > 0 ? store.tags.slice(0, 3) : [`${store.name} Store`],
-    href: store.href,
-    accentClassName: store.accentClassName || theme.accentClassName,
-    accentTextClassName: theme.accentTextClassName,
-    heroClassName: theme.heroClassName,
-    icon: store.icon || theme.icon,
-    logoSrc: store.logoSrc,
-    logoAlt: store.logoAlt || `${store.name} logo`,
-    searchPlaceholder: `Search ${store.name} products...`,
-    categories: [store.category || theme.category],
-    availability: ["In Stock", "RFQ Only", "Pre-order"],
-    segments: ["All Segments", "Industrial", "Commercial", "Enterprise"],
-    products: [],
-    trustBadges: [
-      { title: "Brand Verified", description: "Published store profile", icon: "certified" },
-      { title: "Active Catalogue", description: "No published products yet", icon: "factory" },
-      { title: "Public Listing", description: "Available in the marketplace", icon: "delivery" },
-      { title: "Technical Support", description: "Contact sales for procurement help", icon: "support" },
-    ],
-    ctaTitle: `Need ${store.name} assistance?`,
-    ctaDescription: store.description,
-  };
-}
-
-function buildFallbackStoreDetailFromSlug(slug: string): StoreDetailData {
-  const theme = getStoreThemeBySlug(slug);
-
-  return {
-    slug,
-    name: slug
-      .split("-")
-      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-      .join(" "),
-    category: theme.category,
-    description: "Browse specialised industrial and procurement catalogues.",
-    heroDescription: "Browse specialised products and request procurement support where needed.",
-    tags: ["Store", "Catalogue", "Procurement"],
-    href: `/stores/${slug}`,
-    accentClassName: theme.accentClassName,
-    accentTextClassName: theme.accentTextClassName,
-    heroClassName: theme.heroClassName,
-    icon: theme.icon,
-    logoAlt: `${slug} logo`,
-    searchPlaceholder: `Search ${slug} products...`,
-    categories: [theme.category],
-    availability: ["In Stock", "RFQ Only", "Pre-order"],
-    segments: ["All Segments", "Industrial", "Commercial", "Enterprise"],
-    products: [],
-    trustBadges: [
-      { title: "Brand Verified", description: "Published store profile", icon: "certified" },
-      { title: "Active Catalogue", description: "No published products yet", icon: "factory" },
-      { title: "Public Listing", description: "Available in the marketplace", icon: "delivery" },
-      { title: "Technical Support", description: "Contact sales for procurement help", icon: "support" },
-    ],
-    ctaTitle: `Need ${slug} assistance?`,
-    ctaDescription: "Talk to our sales team for guidance on products, quotations, and procurement support.",
-  };
 }
 
 export async function getPublicStoreBySlug(slug: string) {
@@ -740,26 +655,15 @@ export async function getPublicStoreProducts(slug: string) {
 }
 
 export async function getPublicStorePageData(slug: string) {
-  try {
-    const [store, categories, products, directory] = await Promise.all([
-      getPublicStoreBySlug(slug),
-      getPublicStoreCategories(slug),
-      getPublicStoreProducts(slug),
-      getStoreDirectoryCards(),
-    ]);
+  const [store, categories, products] = await Promise.all([
+    getPublicStoreBySlug(slug),
+    getPublicStoreCategories(slug),
+    getPublicStoreProducts(slug),
+  ]);
 
-    if (store) {
-      return buildStoreDetailData(store, categories, products);
-    }
-
-    const directoryStore = directory.stores.find((item) => item.slug === slug);
-
-    if (directoryStore) {
-      return buildFallbackStoreDetailFromCard(directoryStore);
-    }
-
-    return getStoreBySlug(slug) ?? buildFallbackStoreDetailFromSlug(slug);
-  } catch {
-    return getStoreBySlug(slug) ?? buildFallbackStoreDetailFromSlug(slug);
+  if (!store) {
+    return null;
   }
+
+  return buildStoreDetailData(store, categories, products);
 }

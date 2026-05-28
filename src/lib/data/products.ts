@@ -1,5 +1,5 @@
 import { fetchMarketplaceApi } from "@/lib/backend";
-import { getStoreBySlug, getStoreThemeBySlug, stores } from "@/lib/data/stores";
+import { getStoreThemeBySlug, stores } from "@/lib/data/stores";
 import type { ProductDetailData } from "@/types/product";
 import type { StoreDetailData, StoreProduct } from "@/types/store";
 
@@ -141,6 +141,14 @@ type BackendStoreProductListResponse = {
     limit: number;
     total: number;
   };
+};
+
+type BackendStoreCategoryRecord = {
+  name: string;
+};
+
+type BackendStoreAvailabilityRecord = {
+  stockLabel: string;
 };
 
 async function getBackendStoreDetail(slug: string) {
@@ -360,36 +368,42 @@ function buildBackendProductListFallback(
 
 function buildResolvedStoreFromBackend(
   backendStore: BackendStoreDetailResponse["data"],
+  backendCategories: BackendStoreCategoryRecord[],
+  backendProducts: BackendStoreAvailabilityRecord[],
   theme: ReturnType<typeof getStoreThemeBySlug>,
-  fallbackStore?: StoreDetailData,
 ): StoreDetailData {
+  const categoryNames = backendCategories
+    .map((category) => category.name.trim())
+    .filter(Boolean);
+  const availability = [...new Set(backendProducts.map((product) => product.stockLabel.trim()).filter(Boolean))];
+  const productHighlights = backendStore.productHighlights?.filter(Boolean) ?? [];
+  const tags = [...new Set([...productHighlights, ...categoryNames])].slice(0, 3);
+
   return {
     slug: backendStore.slug,
     name: backendStore.name,
-    category: theme.category,
+    category: productHighlights[0] ?? "Store",
     description:
-      backendStore.briefDescription?.trim() || fallbackStore?.description || `${backendStore.name} public catalogue.`,
+      backendStore.briefDescription?.trim() || `${backendStore.name} public catalogue.`,
     heroDescription:
-      backendStore.briefDescription?.trim() || fallbackStore?.heroDescription || `${backendStore.name} is now live in the marketplace.`,
-    tags: (backendStore.productHighlights?.filter(Boolean) ?? fallbackStore?.tags ?? []).slice(0, 3),
+      backendStore.briefDescription?.trim() || `${backendStore.name} is now live in the marketplace.`,
+    tags: tags.length > 0 ? tags : [backendStore.name],
     href: `/stores/${backendStore.slug}`,
     accentClassName: theme.accentClassName,
     accentTextClassName: theme.accentTextClassName,
     heroClassName: theme.heroClassName,
     icon: theme.icon,
-    logoSrc: backendStore.logoUrl?.trim() || fallbackStore?.logoSrc,
+    logoSrc: backendStore.logoUrl?.trim() || undefined,
     logoAlt: `${backendStore.name} logo`,
     searchPlaceholder: `Search ${backendStore.name} products...`,
-    categories: fallbackStore?.categories?.length ? fallbackStore.categories : ["General Catalogue"],
-    availability: fallbackStore?.availability ?? ["In Stock", "RFQ Only", "Pre-order"],
-    segments: fallbackStore?.segments ?? ["All Segments", "Industrial", "Commercial", "Enterprise"],
+    categories: categoryNames,
+    availability,
+    segments: ["All Segments", "Industrial", "Commercial", "Enterprise"],
     products: [],
     trustBadges: productTrustBadges,
     ctaTitle: `Need ${backendStore.name} assistance?`,
     ctaDescription:
-      backendStore.briefDescription?.trim() ||
-      fallbackStore?.ctaDescription ||
-      `Talk to our sales team for help with ${backendStore.name}.`,
+      backendStore.briefDescription?.trim() || `Talk to our sales team for help with ${backendStore.name}.`,
   };
 }
 
@@ -478,82 +492,38 @@ export function getProductsForStaticParams() {
 }
 
 export async function getProductDetailBySlug(storeSlug: string, productSlug: string) {
-  const store = getStoreBySlug(storeSlug);
   const storeTheme = getStoreThemeBySlug(storeSlug);
+  const backendStore = await getBackendStoreDetail(storeSlug);
 
-  if (!store) {
-    const backendStore = await getBackendStoreDetail(storeSlug);
+  if (!backendStore) {
+    return undefined;
+  }
 
-    if (!backendStore) {
-      return undefined;
-    }
+  const backendProduct = await getBackendProductDetail(storeSlug, productSlug);
 
-    const resolvedStore = buildResolvedStoreFromBackend(backendStore, storeTheme);
+  const backendProducts = backendProduct ? [] : await getBackendStoreProducts(storeSlug);
+  const resolvedStore = buildResolvedStoreFromBackend(
+    backendStore,
+    backendProduct?.category ? [backendProduct.category] : [],
+    backendProduct ? [backendProduct] : backendProducts,
+    storeTheme,
+  );
 
-    const backendProduct = await getBackendProductDetail(storeSlug, productSlug);
-
-    if (!backendProduct) {
-      const backendProducts = await getBackendStoreProducts(storeSlug);
-      const backendListProduct = backendProducts.find((item) => item.id === productSlug);
-
-      if (!backendListProduct) {
-        return undefined;
-      }
-
-      return {
-        store: resolvedStore,
-        product: buildBackendProductListFallback(resolvedStore, backendListProduct),
-      };
-    }
-
+  if (backendProduct) {
     return {
       store: resolvedStore,
       product: buildBackendProductDetail(resolvedStore, backendProduct),
     };
   }
 
-  if (store.slug === "rokswood-energy" && productSlug === rx9000IndustrialInverter.slug) {
-    return {
-      store,
-      product: rx9000IndustrialInverter,
-    };
-  }
+  const backendListProduct = backendProducts.find((item) => item.id === productSlug);
 
-  const product = store.products.find((item) => item.slug === productSlug);
-
-  if (!product) {
-    const backendStore = await getBackendStoreDetail(storeSlug);
-
-    if (!backendStore) {
-      return undefined;
-    }
-
-    const resolvedStore = buildResolvedStoreFromBackend(backendStore, storeTheme, store);
-
-    const backendProduct = await getBackendProductDetail(storeSlug, productSlug);
-
-    if (!backendProduct) {
-      const backendProducts = await getBackendStoreProducts(storeSlug);
-      const backendListProduct = backendProducts.find((item) => item.id === productSlug);
-
-      if (!backendListProduct) {
-        return undefined;
-      }
-
-      return {
-        store: resolvedStore,
-        product: buildBackendProductListFallback(resolvedStore, backendListProduct),
-      };
-    }
-
-    return {
-      store: resolvedStore,
-      product: buildBackendProductDetail(resolvedStore, backendProduct),
-    };
+  if (!backendListProduct) {
+    return undefined;
   }
 
   return {
-    store,
-    product: buildDefaultProductDetail(product, store),
+    store: resolvedStore,
+    product: buildBackendProductListFallback(resolvedStore, backendListProduct),
   };
 }
