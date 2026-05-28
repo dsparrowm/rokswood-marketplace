@@ -99,45 +99,52 @@ type BackendStoreDetailResponse = {
   };
 };
 
+type BackendStoreProductDetailItem = {
+  id: string;
+  storeId: string;
+  categoryId?: string | null;
+  priceNGN?: number | null;
+  priceUSD?: number | null;
+  coverImageUrl?: string | null;
+  viewCount?: number;
+  dataSheetUrl?: string | null;
+  stockLabel: string;
+  warehouseItem: {
+    id: string;
+    name: string;
+    sku?: string | null;
+    unitOfMeasure?: string | null;
+  };
+  category?: {
+    id: string;
+    name: string;
+    slug: string;
+  } | null;
+  images?: {
+    id: string;
+    listingId: string;
+    url: string;
+    altText?: string | null;
+    displayOrder: number;
+  }[];
+};
+
 type BackendStoreProductDetailResponse = {
   status: boolean;
   message: string;
-  data: {
-    id: string;
-    storeId: string;
-    categoryId?: string | null;
-    priceNGN?: number | null;
-    priceUSD?: number | null;
-    coverImageUrl?: string | null;
-    viewCount?: number;
-    dataSheetUrl?: string | null;
-    stockLabel: string;
-    warehouseItem: {
-      id: string;
-      name: string;
-      sku?: string | null;
-      unitOfMeasure?: string | null;
-    };
-    category?: {
-      id: string;
-      name: string;
-      slug: string;
-    } | null;
-    images?: {
-      id: string;
-      listingId: string;
-      url: string;
-      altText?: string | null;
-      displayOrder: number;
-    }[];
-  };
+  data:
+    | BackendStoreProductDetailItem
+    | {
+        store: BackendStoreDetailResponse["data"];
+        product: BackendStoreProductDetailItem;
+      };
 };
 
 type BackendStoreProductListResponse = {
   status: boolean;
   message: string;
   data: {
-    items: BackendStoreProductDetailResponse["data"][];
+    items: BackendStoreProductDetailItem[];
     page: number;
     limit: number;
     total: number;
@@ -167,7 +174,15 @@ async function getBackendProductDetail(storeSlug: string, productId: string) {
     { cache: "no-store" },
   );
 
-  return response?.data ?? null;
+  if (!response?.data) {
+    return null;
+  }
+
+  if ("product" in response.data) {
+    return response.data.product;
+  }
+
+  return response.data;
 }
 
 async function getBackendStoreProducts(storeSlug: string) {
@@ -205,7 +220,7 @@ function resolveRenderableProductImage(
 
 function buildBackendProductDetail(
   store: StoreDetailData,
-  product: BackendStoreProductDetailResponse["data"],
+  product: BackendStoreProductDetailItem,
 ): ProductDetailData {
   const theme = getStoreThemeBySlug(store.slug);
   const gallery = [
@@ -286,7 +301,7 @@ function buildBackendProductDetail(
 
 function buildBackendProductListFallback(
   store: StoreDetailData,
-  product: BackendStoreProductDetailResponse["data"],
+  product: BackendStoreProductDetailItem,
 ): ProductDetailData {
   const theme = getStoreThemeBySlug(store.slug);
   const primaryImage = resolveRenderableProductImage(product.coverImageUrl, store.slug, 0);
