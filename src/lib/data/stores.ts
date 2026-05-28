@@ -398,7 +398,11 @@ type BackendStoreCategory = {
 type BackendStoreCategoriesResponse = {
   status: boolean;
   message: string;
-  data: BackendStoreCategory[];
+  data:
+    | BackendStoreCategory[]
+    | {
+        categories?: BackendStoreCategory[];
+      };
 };
 
 type BackendStoreProductListItem = {
@@ -644,7 +648,11 @@ export async function getPublicStoreCategories(slug: string) {
     { cache: "no-store" },
   );
 
-  return response?.data ?? [];
+  if (Array.isArray(response?.data)) {
+    return response.data;
+  }
+
+  return response?.data?.categories ?? [];
 }
 
 export async function getPublicStoreProducts(slug: string) {
