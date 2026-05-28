@@ -94,6 +94,7 @@ Stores directory backend integration complete
 - Dynamic store and product segments now include loading and error boundaries
 - Public product detail pages now fall back to backend listing data when the detailed product record is missing
 - Public store detail resolver now catches malformed backend payloads and falls back to a safe branded page instead of throwing
+- Public store detail page now uses a client-side React Query hook and public API route so browser DevTools see the request and backend-created stores can hydrate dynamically
 
 ## In Progress
 
