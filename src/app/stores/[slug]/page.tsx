@@ -5,18 +5,12 @@ import StorePageClient from "@/components/store/store-page";
 
 export const dynamic = "force-dynamic";
 
-type StorePageProps = {
-  params: {
-    slug: string;
-  };
-};
-
-export default async function StorePage({ params }: StorePageProps) {
+export default function StorePage() {
   return (
     <div className="min-h-screen bg-[var(--bg-base)] font-sans text-[var(--text-primary)]">
       <Nav />
       <QueryProvider>
-        <StorePageClient slug={params.slug} />
+        <StorePageClient />
       </QueryProvider>
       <Footer />
     </div>

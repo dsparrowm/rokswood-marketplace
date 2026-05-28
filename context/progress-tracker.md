@@ -95,6 +95,7 @@ Stores directory backend integration complete
 - Public product detail pages now fall back to backend listing data when the detailed product record is missing
 - Public store detail resolver now catches malformed backend payloads and falls back to a safe branded page instead of throwing
 - Public store detail page now uses a client-side React Query hook and public API route so browser DevTools see the request and backend-created stores can hydrate dynamically
+- Store detail client now reads the slug from the browser router to avoid undefined API requests
 
 ## In Progress
 

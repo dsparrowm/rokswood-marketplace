@@ -18,10 +18,17 @@ async function fetchStorePage(slug: string): Promise<StoreDetailData> {
   return (await response.json()) as StoreDetailData;
 }
 
-export function useStorePageQuery(slug: string) {
+export function useStorePageQuery(slug?: string) {
   return useQuery({
     queryKey: ["stores", "detail", slug],
-    queryFn: () => fetchStorePage(slug),
+    queryFn: () => {
+      if (!slug) {
+        throw new Error("Missing store slug");
+      }
+
+      return fetchStorePage(slug);
+    },
+    enabled: Boolean(slug),
     staleTime: 0,
     refetchOnMount: "always",
     refetchOnWindowFocus: true,

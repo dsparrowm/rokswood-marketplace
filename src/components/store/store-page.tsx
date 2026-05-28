@@ -1,14 +1,11 @@
 "use client";
 
+import { useParams } from "next/navigation";
 import StoreHero from "@/components/store/store-hero";
 import StoreProductBrowser from "@/components/store/store-product-browser";
 import StoreTechnicalCta from "@/components/store/store-technical-cta";
 import StoreTrustRow from "@/components/store/store-trust-row";
 import { useStorePageQuery } from "@/lib/hooks/use-store-page";
-
-type StorePageClientProps = {
-  slug: string;
-};
 
 function StorePageSkeleton() {
   return (
@@ -52,10 +49,12 @@ function StorePageError({ onRetry }: { onRetry: () => void }) {
   );
 }
 
-export default function StorePageClient({ slug }: StorePageClientProps) {
+export default function StorePageClient() {
+  const params = useParams<{ slug?: string | string[] }>();
+  const slug = Array.isArray(params.slug) ? params.slug[0] : params.slug;
   const { data, isLoading, isError, refetch } = useStorePageQuery(slug);
 
-  if (isLoading) {
+  if (!slug || isLoading) {
     return <StorePageSkeleton />;
   }
 
