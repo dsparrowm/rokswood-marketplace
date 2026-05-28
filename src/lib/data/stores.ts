@@ -668,12 +668,34 @@ export async function getPublicStorePageData(slug: string) {
       getPublicStoreProducts(slug),
     ]);
 
-    if (!store) {
+    if (store) {
+      return buildStoreDetailData(store, categories, products);
+    }
+
+    const seedStore = getStoreBySlug(slug);
+
+    if (!seedStore) {
       return null;
     }
 
-    return buildStoreDetailData(store, categories, products);
+    return {
+      ...seedStore,
+      categories: categories.length > 0 ? categories.map((category) => category.name).filter(Boolean) : seedStore.categories,
+      products: products.length > 0
+        ? buildStoreProductsFromBackend(seedStore.slug, seedStore.name, products)
+        : seedStore.products,
+      logoSrc: seedStore.logoSrc,
+      logoAlt: seedStore.logoAlt,
+      searchPlaceholder: seedStore.searchPlaceholder,
+      availability: seedStore.availability,
+      segments: seedStore.segments,
+      trustBadges: seedStore.trustBadges,
+      ctaTitle: seedStore.ctaTitle,
+      ctaDescription: seedStore.ctaDescription,
+    };
   } catch {
-    return null;
+    const seedStore = getStoreBySlug(slug);
+
+    return seedStore ?? null;
   }
 }
