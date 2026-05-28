@@ -12,6 +12,7 @@ Stores directory backend integration complete
 
 ## Completed
 
+- Store detail API proxy now accepts the shared `NEXT_PUBLIC_API_URL` backend env as a fallback to `ROKSWOOD_HIVE_BACKEND_API_BASE_URL`, so deployed store pages can reach the same backend base URL convention used by the admin app.
 - UI context read and applied to the base stylesheet
 - Context updated to explicitly prefer React Query hooks for server state and cache management
 - Landing page header component implemented and wired to the homepage

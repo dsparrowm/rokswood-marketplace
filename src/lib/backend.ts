@@ -4,7 +4,11 @@ type MarketplaceApiOptions = {
 };
 
 export function getMarketplaceApiBaseUrl() {
-  return process.env.ROKSWOOD_HIVE_BACKEND_API_BASE_URL?.trim() || null;
+  return (
+    process.env.ROKSWOOD_HIVE_BACKEND_API_BASE_URL?.trim() ||
+    process.env.NEXT_PUBLIC_API_URL?.trim() ||
+    null
+  );
 }
 
 export async function fetchMarketplaceApi<T>(
