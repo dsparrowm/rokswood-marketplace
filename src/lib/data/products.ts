@@ -170,16 +170,45 @@ async function getBackendStoreProducts(storeSlug: string) {
   return response?.data.items ?? [];
 }
 
+function hashSlug(slug: string) {
+  return Array.from(slug).reduce((hash, character) => (hash * 31 + character.charCodeAt(0)) >>> 0, 0);
+}
+
+function fallbackProductImage(slug: string, index: number) {
+  const images = [
+    "/assets/store-products/arackteck-generator.svg",
+    "/assets/store-products/pulse-sensor.svg",
+    "/assets/store-products/metals-panel.svg",
+    "/assets/store-products/energy-inverter.svg",
+    "/assets/store-products/efab-frame.svg",
+  ];
+
+  return images[(hashSlug(slug) + index) % images.length];
+}
+
+function resolveRenderableProductImage(
+  source: string | null | undefined,
+  storeSlug: string,
+  index: number,
+) {
+  const trimmedSource = source?.trim();
+
+  if (trimmedSource?.startsWith("/")) {
+    return trimmedSource;
+  }
+
+  return fallbackProductImage(storeSlug, index);
+}
+
 function buildBackendProductDetail(
   store: StoreDetailData,
   product: BackendStoreProductDetailResponse["data"],
 ): ProductDetailData {
   const theme = getStoreThemeBySlug(store.slug);
   const gallery = [
-    product.coverImageUrl,
-    ...(product.images?.map((image) => image.url) ?? []),
-    store.logoSrc,
-  ].filter((value): value is string => Boolean(value));
+    resolveRenderableProductImage(product.coverImageUrl, store.slug, 0),
+    ...(product.images?.map((image, index) => resolveRenderableProductImage(image.url, store.slug, index + 1)) ?? []),
+  ].filter((value, index, values): value is string => Boolean(value) && values.indexOf(value) === index);
   const primaryImage = gallery[0] ?? "/assets/store-products/energy-monitor.svg";
   const price = product.priceUSD ?? product.priceNGN ?? null;
 
@@ -257,7 +286,7 @@ function buildBackendProductListFallback(
   product: BackendStoreProductDetailResponse["data"],
 ): ProductDetailData {
   const theme = getStoreThemeBySlug(store.slug);
-  const primaryImage = product.coverImageUrl?.trim() || store.logoSrc || "/assets/store-products/energy-monitor.svg";
+  const primaryImage = resolveRenderableProductImage(product.coverImageUrl, store.slug, 0);
   const price = product.priceUSD ?? product.priceNGN ?? null;
 
   return {
