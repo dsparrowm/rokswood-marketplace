@@ -677,6 +677,41 @@ function buildFallbackStoreDetailFromCard(store: StoreCardData): StoreDetailData
   };
 }
 
+function buildFallbackStoreDetailFromSlug(slug: string): StoreDetailData {
+  const theme = getStoreThemeBySlug(slug);
+
+  return {
+    slug,
+    name: slug
+      .split("-")
+      .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
+      .join(" "),
+    category: theme.category,
+    description: "Browse specialised industrial and procurement catalogues.",
+    heroDescription: "Browse specialised products and request procurement support where needed.",
+    tags: ["Store", "Catalogue", "Procurement"],
+    href: `/stores/${slug}`,
+    accentClassName: theme.accentClassName,
+    accentTextClassName: theme.accentTextClassName,
+    heroClassName: theme.heroClassName,
+    icon: theme.icon,
+    logoAlt: `${slug} logo`,
+    searchPlaceholder: `Search ${slug} products...`,
+    categories: [theme.category],
+    availability: ["In Stock", "RFQ Only", "Pre-order"],
+    segments: ["All Segments", "Industrial", "Commercial", "Enterprise"],
+    products: [],
+    trustBadges: [
+      { title: "Brand Verified", description: "Published store profile", icon: "certified" },
+      { title: "Active Catalogue", description: "No published products yet", icon: "factory" },
+      { title: "Public Listing", description: "Available in the marketplace", icon: "delivery" },
+      { title: "Technical Support", description: "Contact sales for procurement help", icon: "support" },
+    ],
+    ctaTitle: `Need ${slug} assistance?`,
+    ctaDescription: "Talk to our sales team for guidance on products, quotations, and procurement support.",
+  };
+}
+
 export async function getPublicStoreBySlug(slug: string) {
   const response = await fetchMarketplaceApi<BackendStoreDetailResponse>(
     `/public/stores/${slug}`,
@@ -705,22 +740,26 @@ export async function getPublicStoreProducts(slug: string) {
 }
 
 export async function getPublicStorePageData(slug: string) {
-  const [store, categories, products, directory] = await Promise.all([
-    getPublicStoreBySlug(slug),
-    getPublicStoreCategories(slug),
-    getPublicStoreProducts(slug),
-    getStoreDirectoryCards(),
-  ]);
+  try {
+    const [store, categories, products, directory] = await Promise.all([
+      getPublicStoreBySlug(slug),
+      getPublicStoreCategories(slug),
+      getPublicStoreProducts(slug),
+      getStoreDirectoryCards(),
+    ]);
 
-  if (store) {
-    return buildStoreDetailData(store, categories, products);
+    if (store) {
+      return buildStoreDetailData(store, categories, products);
+    }
+
+    const directoryStore = directory.stores.find((item) => item.slug === slug);
+
+    if (directoryStore) {
+      return buildFallbackStoreDetailFromCard(directoryStore);
+    }
+
+    return getStoreBySlug(slug) ?? buildFallbackStoreDetailFromSlug(slug);
+  } catch {
+    return getStoreBySlug(slug) ?? buildFallbackStoreDetailFromSlug(slug);
   }
-
-  const directoryStore = directory.stores.find((item) => item.slug === slug);
-
-  if (directoryStore) {
-    return buildFallbackStoreDetailFromCard(directoryStore);
-  }
-
-  return getStoreBySlug(slug);
 }

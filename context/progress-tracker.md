@@ -93,6 +93,7 @@ Stores directory backend integration complete
 - Public store detail pages now fall back to backend directory branding when the public detail record is missing
 - Dynamic store and product segments now include loading and error boundaries
 - Public product detail pages now fall back to backend listing data when the detailed product record is missing
+- Public store detail resolver now catches malformed backend payloads and falls back to a safe branded page instead of throwing
 
 ## In Progress
 
