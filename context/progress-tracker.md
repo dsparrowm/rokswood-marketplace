@@ -97,6 +97,8 @@ Stores directory backend integration complete
 - Public store detail page now uses a client-side React Query hook and public API route so browser DevTools see the request and backend-created stores can hydrate dynamically
 - Store detail client now reads the slug from the browser router to avoid undefined API requests
 - Public storefront store categories now come from the backend category endpoint, and the public store page no longer falls back to the seeded category lists
+- Public store detail query now falls back to the local seed store on API 404s so known public slugs still render when the backend detail route is unavailable
+- Public store detail query now uses backend responses only; local seed-store fallbacks were removed from the client hook and shared store resolver
 
 ## In Progress
 

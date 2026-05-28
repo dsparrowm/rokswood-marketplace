@@ -629,10 +629,6 @@ export async function getStoreDirectoryCards() {
   };
 }
 
-export function getStoreBySlug(slug: string) {
-  return stores.find((store) => store.slug === slug);
-}
-
 export async function getPublicStoreBySlug(slug: string) {
   const response = await fetchMarketplaceApi<BackendStoreDetailResponse>(
     `/public/stores/${slug}`,
@@ -672,30 +668,8 @@ export async function getPublicStorePageData(slug: string) {
       return buildStoreDetailData(store, categories, products);
     }
 
-    const seedStore = getStoreBySlug(slug);
-
-    if (!seedStore) {
-      return null;
-    }
-
-    return {
-      ...seedStore,
-      categories: categories.length > 0 ? categories.map((category) => category.name).filter(Boolean) : seedStore.categories,
-      products: products.length > 0
-        ? buildStoreProductsFromBackend(seedStore.slug, seedStore.name, products)
-        : seedStore.products,
-      logoSrc: seedStore.logoSrc,
-      logoAlt: seedStore.logoAlt,
-      searchPlaceholder: seedStore.searchPlaceholder,
-      availability: seedStore.availability,
-      segments: seedStore.segments,
-      trustBadges: seedStore.trustBadges,
-      ctaTitle: seedStore.ctaTitle,
-      ctaDescription: seedStore.ctaDescription,
-    };
+    return null;
   } catch {
-    const seedStore = getStoreBySlug(slug);
-
-    return seedStore ?? null;
+    return null;
   }
 }
