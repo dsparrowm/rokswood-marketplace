@@ -373,9 +373,13 @@ function buildResolvedStoreFromBackend(
   theme: ReturnType<typeof getStoreThemeBySlug>,
 ): StoreDetailData {
   const categoryNames = backendCategories
-    .map((category) => category.name.trim())
-    .filter(Boolean);
-  const availability = [...new Set(backendProducts.map((product) => product.stockLabel.trim()).filter(Boolean))];
+    .map((category) => category.name?.trim())
+    .filter((name): name is string => Boolean(name));
+  const availability = [...new Set(
+    backendProducts
+      .map((product) => product.stockLabel?.trim())
+      .filter((stockLabel): stockLabel is string => Boolean(stockLabel)),
+  )];
   const productHighlights = backendStore.productHighlights?.filter(Boolean) ?? [];
   const tags = [...new Set([...productHighlights, ...categoryNames])].slice(0, 3);
 

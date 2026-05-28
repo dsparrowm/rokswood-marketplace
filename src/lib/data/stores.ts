@@ -523,8 +523,12 @@ function buildStoreDetailData(
   products: BackendStoreProductListItem[],
 ): StoreDetailData {
   const theme = getStoreThemeBySlug(store.slug);
-  const categoryNames = categories.map((category) => category.name.trim()).filter(Boolean);
-  const productHighlights = store.productHighlights?.filter(Boolean) ?? [];
+  const categoryNames = categories
+    .map((category) => category.name?.trim())
+    .filter((name): name is string => Boolean(name));
+  const productHighlights = Array.isArray(store.productHighlights)
+    ? store.productHighlights.filter(Boolean)
+    : [];
   const tags = [...new Set([...productHighlights, ...categoryNames])].slice(0, 3);
   const storeProducts = buildStoreProductsFromBackend(store.slug, store.name, products);
   const availability = storeProducts.length > 0
@@ -585,7 +589,9 @@ function buildStoreDetailData(
 }
 
 function mergeStoreCardData(item: BackendStoreListItem): StoreCardData {
-  const highlights = item.productHighlights?.filter(Boolean) ?? [];
+  const highlights = Array.isArray(item.productHighlights)
+    ? item.productHighlights.filter(Boolean)
+    : [];
 
   return {
     slug: item.slug,
@@ -655,15 +661,19 @@ export async function getPublicStoreProducts(slug: string) {
 }
 
 export async function getPublicStorePageData(slug: string) {
-  const [store, categories, products] = await Promise.all([
-    getPublicStoreBySlug(slug),
-    getPublicStoreCategories(slug),
-    getPublicStoreProducts(slug),
-  ]);
+  try {
+    const [store, categories, products] = await Promise.all([
+      getPublicStoreBySlug(slug),
+      getPublicStoreCategories(slug),
+      getPublicStoreProducts(slug),
+    ]);
 
-  if (!store) {
+    if (!store) {
+      return null;
+    }
+
+    return buildStoreDetailData(store, categories, products);
+  } catch {
     return null;
   }
-
-  return buildStoreDetailData(store, categories, products);
 }
