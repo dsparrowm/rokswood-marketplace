@@ -18,6 +18,7 @@ Stores directory backend integration complete
 - Store logo rendering now uses `next/image` instead of a raw image element, sharing the same backend blob image policy as product images.
 - Store product card images now use full-bleed cover sizing instead of padded contain sizing so uploaded catalogue photos fill the card media area.
 - Product detail hydration now normalizes the backend's `{ store, product }` public product detail response shape before building the product page.
+- Product detail gallery thumbnails are now interactive buttons that update the main product image.
 - UI context read and applied to the base stylesheet
 - Context updated to explicitly prefer React Query hooks for server state and cache management
 - Landing page header component implemented and wired to the homepage
