@@ -90,12 +90,13 @@ Stores directory backend integration complete
 - Backend stores integration for `/stores` verified against the public `/public/stores` response shape
 - `/stores` now uses a TanStack Query hook, a local API route, and a query provider for backend store state
 - Public stores fetch now bypasses browser and route caching so deactivations reflect immediately on refresh
-- Public store detail pages now fall back to backend directory branding when the public detail record is missing
+- Public store detail pages now use backend store, category, and product payloads only; seed-store fallbacks were removed from the public storefront data path
 - Dynamic store and product segments now include loading and error boundaries
-- Public product detail pages now fall back to backend listing data when the detailed product record is missing
-- Public store detail resolver now catches malformed backend payloads and falls back to a safe branded page instead of throwing
+- Public product detail pages now resolve from backend product detail or backend listing data only
+- Public store detail resolver now returns a backend 404 when the store record is missing instead of falling back to seed data
 - Public store detail page now uses a client-side React Query hook and public API route so browser DevTools see the request and backend-created stores can hydrate dynamically
 - Store detail client now reads the slug from the browser router to avoid undefined API requests
+- Public storefront store categories now come from the backend category endpoint, and the public store page no longer falls back to the seeded category lists
 
 ## In Progress
 
@@ -134,7 +135,7 @@ Stores directory backend integration complete
 - Agent Login uses a dedicated portal shell rather than the public buyer navbar/footer to match approved-agent portal access
 - Agent Login keeps dummy credentials colocated with the form because no real auth boundary exists in the frontend-only v1
 - Track Order uses static mock shipment data because v1 has no backend order lookup service
-- Store directory data now comes from the backend public stores API, with local store metadata retained as fallback presentation data
+- Store directory data now comes from the backend public stores API, with seed-store fallback entries removed from the public storefront
 
 ## Session Notes
 
@@ -150,6 +151,7 @@ Stores directory backend integration complete
 - Become an Agent verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
 - `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
 - Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected
+- Public storefront build verification passed with `pnpm run build` after removing seed-store fallback from store, category, and product paths
 - `pnpm lint` completed with one pre-existing warning in `src/components/marketplace/store-icon.tsx` about a raw `<img>` tag
 - `pnpm exec tsc --noEmit` passed after the track-order implementation
 - `pnpm build` passed after the track-order implementation

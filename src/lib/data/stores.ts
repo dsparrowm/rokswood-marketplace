@@ -651,7 +651,7 @@ export async function getPublicStoreProducts(slug: string) {
     { cache: "no-store" },
   );
 
-  return response?.data.items ?? [];
+  return response?.data?.items ?? [];
 }
 
 export async function getPublicStorePageData(slug: string) {

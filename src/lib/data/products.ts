@@ -175,7 +175,7 @@ async function getBackendStoreProducts(storeSlug: string) {
     { cache: "no-store" },
   );
 
-  return response?.data.items ?? [];
+  return response?.data?.items ?? [];
 }
 
 function hashSlug(slug: string) {
