@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import { z } from "zod";
@@ -15,6 +15,8 @@ import CheckoutTextareaField from "@/components/checkout/checkout-textarea-field
 import CheckoutTextField from "@/components/checkout/checkout-text-field";
 import Footer from "@/components/marketplace/footer";
 import Nav from "@/components/marketplace/nav";
+import { checkoutCurrencyOptionsFallback } from "@/lib/data/checkout";
+import { useCheckoutSupportQuery } from "@/lib/hooks/use-checkout-support";
 import { calculateCheckoutTotals } from "@/lib/checkout";
 import { formatCurrency, groupCartItems } from "@/lib/cart";
 import { useCartStore } from "@/store/cart.store";
@@ -34,12 +36,17 @@ const checkoutSchema = z
     deliveryMethod: z.enum(["standard", "express", "enterprise"]),
     orderNotes: z.string().max(500, "Keep notes under 500 characters"),
     paymentMethod: z.enum(["card", "bank_transfer", "corporate"]),
+    bankCode: z.string(),
     cardNumber: z.string(),
     cardExpiry: z.string(),
     cardCvv: z.string(),
   })
   .superRefine((values, ctx) => {
     if (values.paymentMethod !== "card") {
+      if (values.paymentMethod === "bank_transfer" && !values.bankCode.trim()) {
+        ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["bankCode"], message: "Choose a bank for the transfer" });
+      }
+
       return;
     }
 
@@ -88,6 +95,12 @@ function EmptyCheckoutState() {
 export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
   const groupedItems = groupCartItems(items);
+  const checkoutSupportQuery = useCheckoutSupportQuery();
+  const supportData = checkoutSupportQuery.data ?? {
+    currencyOptions: checkoutCurrencyOptionsFallback,
+    banks: [],
+    deliveryCountryCodes: [],
+  };
 
   const form = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
@@ -104,6 +117,7 @@ export default function CheckoutPage() {
       deliveryMethod: "standard",
       orderNotes: "",
       paymentMethod: "card",
+      bankCode: "",
       cardNumber: "•••• •••• •••• 4242",
       cardExpiry: "12/25",
       cardCvv: "•••",
@@ -114,13 +128,23 @@ export default function CheckoutPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const deliveryMethod = useWatch({ control: form.control, name: "deliveryMethod" });
   const paymentMethod = useWatch({ control: form.control, name: "paymentMethod" });
+  const bankCode = useWatch({ control: form.control, name: "bankCode" });
   const totals = calculateCheckoutTotals(items, deliveryMethod);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = form;
+
+  useEffect(() => {
+    if (paymentMethod !== "bank_transfer" || bankCode || supportData.banks.length === 0) {
+      return;
+    }
+
+    setValue("bankCode", supportData.banks[0].code, { shouldValidate: true, shouldDirty: false });
+  }, [bankCode, paymentMethod, setValue, supportData.banks]);
 
   const onSubmit = handleSubmit(() => {
     setIsSubmitted(true);
@@ -228,7 +252,12 @@ export default function CheckoutPage() {
                     </CheckoutSection>
 
                     <CheckoutSection step={3} title="Delivery Method">
-                      <CheckoutDeliveryMethods register={register} selectedMethod={deliveryMethod} error={errors.deliveryMethod} />
+                      <CheckoutDeliveryMethods
+                        register={register}
+                        selectedMethod={deliveryMethod}
+                        error={errors.deliveryMethod}
+                        deliveryCountryCodes={supportData.deliveryCountryCodes}
+                      />
                     </CheckoutSection>
 
                     <CheckoutSection step={4} title="Order Notes (Optional)">
@@ -246,9 +275,12 @@ export default function CheckoutPage() {
                       <CheckoutPaymentMethod
                         register={register}
                         selectedMethod={paymentMethod}
+                        bankOptions={supportData.banks}
+                        currencyOptions={supportData.currencyOptions}
                         cardNumberError={errors.cardNumber?.message}
                         cardExpiryError={errors.cardExpiry?.message}
                         cardCvvError={errors.cardCvv?.message}
+                        bankCodeError={errors.bankCode?.message}
                         payLabel={payLabel}
                       />
                     </div>
@@ -262,9 +294,12 @@ export default function CheckoutPage() {
                   <CheckoutPaymentMethod
                     register={register}
                     selectedMethod={paymentMethod}
+                    bankOptions={supportData.banks}
+                    currencyOptions={supportData.currencyOptions}
                     cardNumberError={errors.cardNumber?.message}
                     cardExpiryError={errors.cardExpiry?.message}
                     cardCvvError={errors.cardCvv?.message}
+                    bankCodeError={errors.bankCode?.message}
                     payLabel={payLabel}
                   />
                 ) : null}

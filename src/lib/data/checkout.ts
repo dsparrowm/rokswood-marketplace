@@ -1,8 +1,28 @@
 import type {
+  CheckoutCurrencyOption,
   CheckoutDeliveryMethod,
   CheckoutPaymentMethod,
   CheckoutSecurityBadge,
 } from "@/types/checkout";
+
+export const checkoutCurrencyOptionsFallback: CheckoutCurrencyOption[] = [
+  {
+    key: "NGN",
+    value: "Nigerian Naira (NGN)",
+  },
+  {
+    key: "GHS",
+    value: "Ghanaian Cedi (GHS)",
+  },
+  {
+    key: "USD",
+    value: "US Dollar (USD)",
+  },
+  {
+    key: "CAD",
+    value: "Canadian Dollar (CAD)",
+  },
+];
 
 export const checkoutDeliveryMethods: CheckoutDeliveryMethod[] = [
   {

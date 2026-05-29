@@ -4,11 +4,12 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Stores directory backend integration complete
+Marketplace backend integration specs defined
 
 ## Current Goal
 
 - Keep the marketplace context aligned with the implementation pattern: React Query for server state, Zustand for client state, and small reusable components.
+- Split backend-powered marketplace work into discrete feature specs before implementation.
 
 ## Completed
 
@@ -106,6 +107,9 @@ Stores directory backend integration complete
 - Public storefront store categories now come from the backend category endpoint, and the public store page no longer falls back to the seeded category lists
 - Public store detail query now falls back to the local seed store on API 404s so known public slugs still render when the backend detail route is unavailable
 - Public store detail query now uses backend responses only; local seed-store fallbacks were removed from the client hook and shared store resolver
+- Backend marketplace integration specs split into catalog, checkout support, order flow, and order tracking feature files
+- Checkout support data now loads through a cached React Query hook backed by a local `/api/checkout/support` proxy that merges backend currency options, bank lookup results, and delivery-country allowlist data with graceful local fallbacks
+- Checkout delivery availability UI now reflects the backend delivery-country allowlist, and bank transfer selection now uses backend bank lookup results in the existing checkout flow
 
 ## In Progress
 
@@ -113,7 +117,7 @@ Stores directory backend integration complete
 
 ## Next Up
 
-- None
+- Implement the backend-powered public catalog integration spec
 
 ## Open Questions
 
@@ -173,3 +177,4 @@ Stores directory backend integration complete
 - Agent Login verification passed with `pnpm lint` and `pnpm exec tsc --noEmit`
 - `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
 - Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected
+- Checkout support integration verification passed with `pnpm exec tsc --noEmit` and a targeted error check on the touched checkout files

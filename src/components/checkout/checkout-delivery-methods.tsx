@@ -7,6 +7,7 @@ type CheckoutDeliveryMethodsProps = {
   register: UseFormRegister<CheckoutFormValues>;
   selectedMethod: CheckoutDeliveryMethodId;
   error?: FieldError;
+  deliveryCountryCodes: string[];
 };
 
 function DeliveryIcon({ methodId }: { methodId: CheckoutDeliveryMethodId }) {
@@ -37,12 +38,46 @@ function DeliveryIcon({ methodId }: { methodId: CheckoutDeliveryMethodId }) {
   );
 }
 
-export default function CheckoutDeliveryMethods({ register, selectedMethod, error }: CheckoutDeliveryMethodsProps) {
+export default function CheckoutDeliveryMethods({
+  register,
+  selectedMethod,
+  error,
+  deliveryCountryCodes,
+}: CheckoutDeliveryMethodsProps) {
+  const deliveryCoverageLabel =
+    deliveryCountryCodes.length > 0
+      ? `Backend allowlist: ${deliveryCountryCodes.length} countries`
+      : "Delivery coverage refreshes from the backend";
+
   return (
     <div>
+      <div className="mb-4 rounded-md border border-[var(--border-default)] bg-[var(--bg-base)] px-4 py-3">
+        <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--text-light)]">Delivery Availability</p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {deliveryCountryCodes.length > 0 ? (
+            deliveryCountryCodes.slice(0, 8).map((countryCode) => (
+              <span
+                key={countryCode}
+                className="inline-flex rounded-full border border-[var(--border-default)] bg-[var(--bg-surface)] px-2.5 py-1 text-[11px] font-semibold text-[var(--text-primary)]"
+              >
+                {countryCode}
+              </span>
+            ))
+          ) : (
+            <span className="text-xs text-[var(--text-muted)]">{deliveryCoverageLabel}</span>
+          )}
+        </div>
+      </div>
+
       <div className="grid gap-3 lg:grid-cols-3">
         {checkoutDeliveryMethods.map((method) => {
           const isSelected = method.id === selectedMethod;
+          const availabilityLabel =
+            method.id === "enterprise"
+              ? method.availability
+              : deliveryCountryCodes.length > 0
+                ? `Available across ${deliveryCountryCodes.length} allowlisted countries`
+                : method.availability;
 
           return (
             <label
@@ -72,7 +107,7 @@ export default function CheckoutDeliveryMethods({ register, selectedMethod, erro
               <div className="mt-3 space-y-1">
                 <h3 className="text-sm font-semibold text-[var(--text-primary)]">{method.title}</h3>
                 <p className="text-xs text-[var(--text-muted)]">{method.description}</p>
-                <p className="text-xs font-medium text-[var(--state-success)]">{method.availability}</p>
+                <p className="text-xs font-medium text-[var(--state-success)]">{availabilityLabel}</p>
                 <p className="text-xs text-[var(--text-muted)]">{method.note}</p>
               </div>
             </label>

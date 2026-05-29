@@ -2,11 +2,13 @@ Read `AGENTS.md` before starting
 
 Read `context/progress-tracker.md`
 
-Read the backend(rokswood-hive-backend-api)
+## Backend Marketplace Integration Index
 
-You are a senior frontend engineer on allowed to work on the two frontends, the backend is only here for context.
-occasionally, you can fetch latest updates from origin/staging branch and have it locally for context.
+Use the backend repository as implementation context only. The marketplace remains a frontend workspace, but the following backend-backed features are now split into dedicated feature specs:
 
-setup backend integration so subsequent requests to the backend will be using env variables, no hardcoded backend url
-stores listed on the stores page should not be static, the number of stores available should come from the backend
-the store cards will also render data from the backend, whatever is not gotten from the backend should remain static(it's intentional)
+1. [15-public-marketplace-catalog-integration.md](15-public-marketplace-catalog-integration.md)
+2. [16-public-marketplace-checkout-support.md](16-public-marketplace-checkout-support.md)
+3. [17-public-marketplace-order-flow.md](17-public-marketplace-order-flow.md)
+4. [18-public-marketplace-order-tracking.md](18-public-marketplace-order-tracking.md)
+
+Keep this file as the entry point for backend-driven marketplace work.
