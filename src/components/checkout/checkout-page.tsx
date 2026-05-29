@@ -16,6 +16,7 @@ import CheckoutTextField from "@/components/checkout/checkout-text-field";
 import Footer from "@/components/marketplace/footer";
 import Nav from "@/components/marketplace/nav";
 import { checkoutCurrencyOptionsFallback } from "@/lib/data/checkout";
+import { useCheckoutOrderMutation } from "@/lib/hooks/use-checkout-order";
 import { useCheckoutSupportQuery } from "@/lib/hooks/use-checkout-support";
 import { calculateCheckoutTotals } from "@/lib/checkout";
 import { formatCurrency, groupCartItems } from "@/lib/cart";
@@ -67,10 +68,53 @@ const checkoutSchema = z
     }
   });
 
-function SuccessBanner() {
+type CheckoutSubmissionResult = {
+  order: {
+    orderNumber: string;
+    trackingToken: string;
+    total: number;
+    currency: string;
+  };
+  payment: {
+    provider: string;
+    amount: number;
+    currency: string;
+    checkoutUrl?: string;
+  };
+};
+
+function CheckoutResultBanner({ result }: { result: CheckoutSubmissionResult }) {
+  const paymentCurrency = result.payment.currency as "USD" | "EUR" | "NGN" | "GHS" | "CAD";
+
   return (
-    <div className="rounded-lg border border-[var(--state-success)] bg-[color-mix(in_srgb,var(--state-success)_8%,var(--bg-surface))] px-4 py-3 text-sm text-[var(--text-primary)] shadow-sm">
-      Order details validated. A procurement confirmation will be issued after payment processing.
+    <div className="rounded-lg border border-[var(--state-success)] bg-[color-mix(in_srgb,var(--state-success)_8%,var(--bg-surface))] px-4 py-4 text-sm text-[var(--text-primary)] shadow-sm">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="space-y-2">
+          <p className="font-semibold text-[var(--text-primary)]">Order {result.order.orderNumber} created successfully.</p>
+          <p className="text-[var(--text-muted)]">
+            Procurement confirmation is ready. Payment checkout has been initialized with {result.payment.provider}.
+          </p>
+          <p className="text-xs text-[var(--text-light)]">Tracking token: {result.order.trackingToken}</p>
+          <p className="text-xs text-[var(--text-light)]">
+            Payment amount: {formatCurrency(result.payment.amount, { currency: paymentCurrency })}
+          </p>
+        </div>
+
+        {result.payment.checkoutUrl ? (
+          <a
+            href={result.payment.checkoutUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex h-10 items-center justify-center rounded-md bg-[var(--bg-dark)] px-4 text-sm font-semibold text-[var(--text-on-dark)] transition-colors hover:bg-[var(--text-primary)]"
+          >
+            Continue to payment
+          </a>
+        ) : (
+          <span className="inline-flex h-10 items-center justify-center rounded-md border border-[var(--border-default)] bg-[var(--bg-surface)] px-4 text-sm font-semibold text-[var(--text-primary)]">
+            Payment handoff pending
+          </span>
+        )}
+      </div>
     </div>
   );
 }
@@ -96,6 +140,7 @@ export default function CheckoutPage() {
   const items = useCartStore((state) => state.items);
   const groupedItems = groupCartItems(items);
   const checkoutSupportQuery = useCheckoutSupportQuery();
+  const checkoutOrderMutation = useCheckoutOrderMutation();
   const supportData = checkoutSupportQuery.data ?? {
     currencyOptions: checkoutCurrencyOptionsFallback,
     banks: [],
@@ -125,7 +170,8 @@ export default function CheckoutPage() {
     mode: "onSubmit",
   });
 
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [checkoutResult, setCheckoutResult] = useState<CheckoutSubmissionResult | null>(null);
+  const [checkoutErrorMessage, setCheckoutErrorMessage] = useState<string | null>(null);
   const deliveryMethod = useWatch({ control: form.control, name: "deliveryMethod" });
   const paymentMethod = useWatch({ control: form.control, name: "paymentMethod" });
   const bankCode = useWatch({ control: form.control, name: "bankCode" });
@@ -146,8 +192,20 @@ export default function CheckoutPage() {
     setValue("bankCode", supportData.banks[0].code, { shouldValidate: true, shouldDirty: false });
   }, [bankCode, paymentMethod, setValue, supportData.banks]);
 
-  const onSubmit = handleSubmit(() => {
-    setIsSubmitted(true);
+  const onSubmit = handleSubmit(async (values) => {
+    setCheckoutErrorMessage(null);
+    setCheckoutResult(null);
+
+    try {
+      const result = await checkoutOrderMutation.mutateAsync({
+        ...values,
+        cartItems: items,
+      });
+
+      setCheckoutResult(result);
+    } catch (error) {
+      setCheckoutErrorMessage(error instanceof Error ? error.message : "Checkout submission failed");
+    }
   });
 
   const payLabel = formatCurrency(totals.total);
@@ -168,7 +226,17 @@ export default function CheckoutPage() {
               </p>
             </div>
 
-            {isSubmitted ? <div className="mt-6"><SuccessBanner /></div> : null}
+            {checkoutErrorMessage ? (
+              <div className="mt-6 rounded-lg border border-[var(--state-error)] bg-[color-mix(in_srgb,var(--state-error)_8%,var(--bg-surface))] px-4 py-3 text-sm text-[var(--text-primary)] shadow-sm">
+                {checkoutErrorMessage}
+              </div>
+            ) : null}
+
+            {checkoutResult ? (
+              <div className="mt-6">
+                <CheckoutResultBanner result={checkoutResult} />
+              </div>
+            ) : null}
 
             <form onSubmit={onSubmit} className="mt-8 grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(340px,0.8fr)] xl:grid-cols-[minmax(0,1.15fr)_400px]">
               <div className="space-y-6">
@@ -282,6 +350,7 @@ export default function CheckoutPage() {
                         cardCvvError={errors.cardCvv?.message}
                         bankCodeError={errors.bankCode?.message}
                         payLabel={payLabel}
+                        isLoading={checkoutOrderMutation.isPending}
                       />
                     </div>
                   </>
@@ -301,6 +370,7 @@ export default function CheckoutPage() {
                     cardCvvError={errors.cardCvv?.message}
                     bankCodeError={errors.bankCode?.message}
                     payLabel={payLabel}
+                    isLoading={checkoutOrderMutation.isPending}
                   />
                 ) : null}
               </div>

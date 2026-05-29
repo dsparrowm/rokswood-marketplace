@@ -4,12 +4,12 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Marketplace backend integration specs defined
+Agent registration backend integration implemented
 
 ## Current Goal
 
 - Keep the marketplace context aligned with the implementation pattern: React Query for server state, Zustand for client state, and small reusable components.
-- Split backend-powered marketplace work into discrete feature specs before implementation.
+- Keep public marketplace forms wired to backend-aligned route handlers and mutation hooks.
 
 ## Completed
 
@@ -110,6 +110,18 @@ Marketplace backend integration specs defined
 - Backend marketplace integration specs split into catalog, checkout support, order flow, and order tracking feature files
 - Checkout support data now loads through a cached React Query hook backed by a local `/api/checkout/support` proxy that merges backend currency options, bank lookup results, and delivery-country allowlist data with graceful local fallbacks
 - Checkout delivery availability UI now reflects the backend delivery-country allowlist, and bank transfer selection now uses backend bank lookup results in the existing checkout flow
+- Marketplace environment now points to the deployed backend at `https://hive-backend-api.apps.rokswood.com` via local `.env.local`
+- Browser verification passed on `/checkout` against the deployed backend, including live checkout-support data for currencies, banks, and delivery-country availability
+ - Implemented public guest order flow helper that:
+	 - enforces single-store orders, maps form country names to ISO-2 codes, and resolves frontend cart items to backend listing IDs by name/SKU
+	 - posts guest orders to the backend `/public/stores/:slug/orders` endpoint and initializes payment at `/public/orders/:trackingToken/payment/initialize`
+ - Added local API proxy `/api/checkout/order` that orchestrates the store-catalog lookup, guest order creation, and payment initialization
+ - Wired the checkout page to the backend: replaced the local success toggle with backend `CheckoutResultBanner`, added error feedback, and disabled the Pay button while the order/payment mutation is in flight
+- Agent registration request spec `18-agent-registration-request.md` implemented for the public marketplace form
+- Added typed agent registration payload/response models and a React Query mutation hook for `/api/agent-requests`
+- Added local API route `/api/agent-requests` that forwards public registration payloads to the backend `/public/agent-requests` endpoint
+- Updated the `/agents` registration form to submit backend-aligned request fields, use ISO country codes, show pending/error/success states, and reset after a successful submission
+- Moved React Query provider ownership to the root app layout and removed duplicate route-level providers from stores, store detail, checkout, and agents pages
 
 ## In Progress
 
@@ -117,7 +129,7 @@ Marketplace backend integration specs defined
 
 ## Next Up
 
-- Implement the backend-powered public catalog integration spec
+- Verify the deployed backend `/public/agent-requests` endpoint with a live registration submission
 
 ## Open Questions
 
@@ -149,6 +161,8 @@ Marketplace backend integration specs defined
 - Agent Login keeps dummy credentials colocated with the form because no real auth boundary exists in the frontend-only v1
 - Track Order uses static mock shipment data because v1 has no backend order lookup service
 - Store directory data now comes from the backend public stores API, with seed-store fallback entries removed from the public storefront
+- Agent registration uses a local public route handler plus React Query mutation instead of frontend-only validation state
+- React Query is mounted globally from `src/app/layout.tsx`; route-level providers are reserved only for deliberate cache isolation
 
 ## Session Notes
 
@@ -178,3 +192,7 @@ Marketplace backend integration specs defined
 - `pnpm build` could not complete because Next.js font fetching requires network access and the escalation request was rejected
 - Local dev server could not start in sandbox due localhost bind restrictions and the escalation request was rejected
 - Checkout support integration verification passed with `pnpm exec tsc --noEmit` and a targeted error check on the touched checkout files
+- Local backend inspection found the agent request schema fields under `operations/agent-sales`; the checked-out backend tree did not include the public controller, so the frontend targets the specified `/public/agent-requests` contract
+- Agent registration integration verification passed with `pnpm exec tsc --noEmit --incremental false` and `pnpm lint`; lint still reports two pre-existing unused warnings in `src/lib/data/products.ts`
+- `pnpm build` initially failed because `/agents` used a React Query mutation without the route-level `QueryProvider`; wrapping `AgentPage` in `src/app/agents/page.tsx` fixed the prerender error, and `pnpm build` now passes
+- Root QueryProvider refactor verification passed with `pnpm exec tsc --noEmit --incremental false`, `pnpm lint`, and `pnpm build`; lint still reports two pre-existing unused warnings in `src/lib/data/products.ts`

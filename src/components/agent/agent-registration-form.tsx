@@ -1,25 +1,26 @@
 "use client";
 
-import { useState } from "react";
 import type { ReactNode } from "react";
 
 import Link from "next/link";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Loader2 } from "lucide-react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+
+import { useAgentRegistrationRequestMutation } from "@/lib/hooks/use-agent-registration-request";
 
 const agentRegistrationSchema = z
   .object({
     fullName: z.string().min(2, "Enter your full name"),
     email: z.string().email("Enter a valid email address"),
     phone: z.string().min(7, "Enter a valid phone number"),
-    country: z.string().min(2, "Select a country"),
+    countryCode: z.string().min(2, "Select a country"),
     businessName: z.string().optional(),
     businessType: z.string().min(2, "Select a business type"),
     yearsOfExperience: z.string().min(1, "Select years of experience"),
-    productCategory: z.string().min(2, "Select a category"),
-    storeLocation: z.string().min(2, "Enter a preferred location"),
+    preferredProductCategory: z.string().min(2, "Select a category"),
+    preferredStoreLocation: z.string().min(2, "Enter a preferred location"),
     targetMarketRegion: z.string().min(2, "Enter a target region"),
     password: z.string().min(8, "Use at least 8 characters"),
     confirmPassword: z.string().min(8, "Confirm your password"),
@@ -70,33 +71,55 @@ const inputClassName =
 const selectClassName = `${inputClassName} appearance-none pr-10`;
 
 export default function AgentRegistrationForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const agentRegistrationRequest = useAgentRegistrationRequestMutation();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<AgentRegistrationValues>({
     resolver: zodResolver(agentRegistrationSchema),
     defaultValues: {
-      fullName: "John Doe",
-      email: "john@company.com",
-      phone: "+1 (555) 000-0000",
-      country: "",
-      businessName: "Acme Logistics LLC",
+      fullName: "",
+      email: "",
+      phone: "",
+      countryCode: "",
+      businessName: "",
       businessType: "",
       yearsOfExperience: "",
-      productCategory: "",
-      storeLocation: "e.g. Lagos Central",
-      targetMarketRegion: "e.g. South West",
-      password: "password123",
-      confirmPassword: "password123",
+      preferredProductCategory: "",
+      preferredStoreLocation: "",
+      targetMarketRegion: "",
+      password: "",
+      confirmPassword: "",
       acceptedTerms: false,
     },
     mode: "onSubmit",
   });
 
-  const onSubmit = handleSubmit(() => {
-    setSubmitted(true);
+  const onSubmit = handleSubmit((values) => {
+    agentRegistrationRequest.mutate(
+      {
+        fullName: values.fullName,
+        email: values.email,
+        phone: values.phone,
+        countryCode: values.countryCode,
+        businessName: values.businessName || undefined,
+        businessType: values.businessType,
+        yearsOfExperience: values.yearsOfExperience,
+        preferredProductCategory: values.preferredProductCategory,
+        preferredStoreLocation: values.preferredStoreLocation,
+        targetMarketRegion: values.targetMarketRegion,
+        password: values.password,
+        termsAccepted: true,
+        policyAccepted: true,
+      },
+      {
+        onSuccess: () => {
+          reset();
+        },
+      },
+    );
   });
 
   return (
@@ -111,9 +134,15 @@ export default function AgentRegistrationForm() {
           </p>
         </div>
 
-        {submitted ? (
+        {agentRegistrationRequest.isSuccess ? (
           <div className="mx-auto mt-8 max-w-2xl rounded-lg border border-[var(--state-success)] bg-[color-mix(in_srgb,var(--state-success)_8%,var(--bg-surface))] px-4 py-3 text-sm font-medium text-[var(--text-primary)]">
-            Application details validated. A Rokswood partner manager will review the registration.
+            Agent registration submitted. A Rokswood partner manager will review the application.
+          </div>
+        ) : null}
+
+        {agentRegistrationRequest.isError ? (
+          <div className="mx-auto mt-8 max-w-2xl rounded-lg border border-[var(--state-error)] bg-[color-mix(in_srgb,var(--state-error)_8%,var(--bg-surface))] px-4 py-3 text-sm font-medium text-[var(--text-primary)]">
+            {agentRegistrationRequest.error.message}
           </div>
         ) : null}
 
@@ -134,14 +163,14 @@ export default function AgentRegistrationForm() {
                 <Field label="Phone Number" error={errors.phone?.message}>
                   <input {...register("phone")} className={inputClassName} autoComplete="tel" />
                 </Field>
-                <Field label="Country" error={errors.country?.message}>
+                <Field label="Country" error={errors.countryCode?.message}>
                   <div className="relative">
-                    <select {...register("country")} className={selectClassName} autoComplete="country-name">
+                    <select {...register("countryCode")} className={selectClassName} autoComplete="country">
                       <option value="">Select Country</option>
-                      <option value="Nigeria">Nigeria</option>
-                      <option value="Ghana">Ghana</option>
-                      <option value="United States">United States</option>
-                      <option value="United Kingdom">United Kingdom</option>
+                      <option value="NG">Nigeria</option>
+                      <option value="GH">Ghana</option>
+                      <option value="US">United States</option>
+                      <option value="GB">United Kingdom</option>
                     </select>
                     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" aria-hidden="true" />
                   </div>
@@ -185,9 +214,9 @@ export default function AgentRegistrationForm() {
             <section>
               <SectionHeader step={3} title="Agent Preferences" />
               <div className="mt-6 grid gap-5 sm:grid-cols-2">
-                <Field label="Preferred Product Category" error={errors.productCategory?.message}>
+                <Field label="Preferred Product Category" error={errors.preferredProductCategory?.message}>
                   <div className="relative">
-                    <select {...register("productCategory")} className={selectClassName}>
+                    <select {...register("preferredProductCategory")} className={selectClassName}>
                       <option value="">Select Category</option>
                       <option value="Industrial Equipment">Industrial Equipment</option>
                       <option value="Energy Systems">Energy Systems</option>
@@ -197,11 +226,11 @@ export default function AgentRegistrationForm() {
                     <ChevronDown className="pointer-events-none absolute right-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[var(--text-muted)]" aria-hidden="true" />
                   </div>
                 </Field>
-                <Field label="Preferred Store Location" error={errors.storeLocation?.message}>
-                  <input {...register("storeLocation")} className={inputClassName} />
+                <Field label="Preferred Store Location" error={errors.preferredStoreLocation?.message}>
+                  <input {...register("preferredStoreLocation")} className={inputClassName} placeholder="e.g. Lagos Central" />
                 </Field>
                 <Field label="Target Market Region" error={errors.targetMarketRegion?.message}>
-                  <input {...register("targetMarketRegion")} className={inputClassName} />
+                  <input {...register("targetMarketRegion")} className={inputClassName} placeholder="e.g. South West" />
                 </Field>
               </div>
             </section>
@@ -242,9 +271,17 @@ export default function AgentRegistrationForm() {
 
           <button
             type="submit"
+            disabled={agentRegistrationRequest.isPending}
             className="mt-8 inline-flex h-12 w-full items-center justify-center rounded-md bg-[var(--accent-payment)] px-5 text-sm font-semibold text-[var(--text-on-dark)] shadow-lg shadow-[color-mix(in_srgb,var(--accent-payment)_24%,transparent)] transition-colors hover:bg-[color-mix(in_srgb,var(--accent-payment)_88%,var(--bg-dark))]"
           >
-            Become an Agent
+            {agentRegistrationRequest.isPending ? (
+              <>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" aria-hidden="true" />
+                Submitting
+              </>
+            ) : (
+              "Become an Agent"
+            )}
           </button>
         </form>
       </div>

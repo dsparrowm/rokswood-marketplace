@@ -16,8 +16,8 @@
 - `app/(store)/` — Stores directory (`/stores`) and individual store pages (`/stores/[slug]`). Static with mock/API data.
 - `app/(product)/` — Individual product pages (`/stores/[slug]/products/[productSlug]`). Static with mock/API data.
 - `app/(commerce)/` — Cart (`/cart`) and Checkout (`/checkout`). Driven by Zustand cart store.
-- `app/agents/` — Become an Agent application page. Frontend-only static marketing and
-  registration flow.
+- `app/agents/` — Become an Agent application page. Static marketing sections with
+  backend-backed public registration submission through `/api/agent-requests`.
 - `app/agents/login/` — Agent portal login page. Frontend-only static shell with a
   client form that validates dummy credentials and routes to the dashboard mockup.
 - `app/agents/dashboard/` — Agent portal dashboard. Frontend-only static mock view
@@ -38,6 +38,9 @@ Current implementation files live under `src/`, so these boundaries map to
   own layout and pass typed store data into `StoreCard`.
 - The `/stores` page fetches backend-backed directory data via an env-configured helper and passes typed card props into the shared grid; the homepage continues to render the local static store seed.
 - Server-backed pages and feature sections should read data through React Query hooks in `lib/hooks/` rather than ad hoc `useEffect` fetch logic in the component tree.
+- React Query is provided once from the root app layout through `QueryProvider`;
+  feature routes should not add duplicate route-level providers unless they need an
+  intentionally isolated cache boundary.
 - Individual store pages compose reusable presentational sections from typed store
   detail data: `StoreHero`, `StoreFilterSidebar`, `StoreProductCard`,
   `StoreTrustRow`, and `StoreTechnicalCta`.
@@ -54,7 +57,8 @@ Current implementation files live under `src/`, so these boundaries map to
 - Checkout totals are derived from the flat cart state and selected delivery method via `lib/checkout.ts`.
 - Become an Agent pages compose reusable sections: `AgentHero`, `AgentTrustStrip`,
   `AgentBenefits`, `AgentCommissionTiers`, `AgentRegistrationForm`, and `AgentFaq`.
-  The registration form owns its frontend-only React Hook Form/Zod validation.
+  The registration form owns React Hook Form/Zod validation and submits agent request
+  payloads through a React Query mutation hook.
 - Agent dashboard pages compose reusable presentational sections from typed dashboard
   data: `AgentDashboardHeader`, `AgentStatusBanner`, `AgentMetricCard`,
   `AgentSalesPerformance`, `AgentWalletCard`, `AgentStorefrontCard`,
@@ -87,6 +91,9 @@ Current implementation files live under `src/`, so these boundaries map to
   v1-only frontend authentication data for the static portal mockup.
 - Track order mock shipment data lives in `src/lib/data/order-tracking.ts` and is
   used by the static `/track-order` lookup page.
+- Public agent registration posts to the backend `/public/agent-requests` endpoint
+  through the local `/api/agent-requests` route handler so the browser does not call
+  the backend directly.
 
 ## Invariants
 

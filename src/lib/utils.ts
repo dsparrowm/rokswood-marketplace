@@ -2,7 +2,10 @@ export function cn(...classNames: Array<string | false | null | undefined>) {
   return classNames.filter(Boolean).join(" ");
 }
 
-export function formatCurrency(value: number, options?: { currency?: "USD" | "EUR" }) {
+export function formatCurrency(
+  value: number,
+  options?: { currency?: "USD" | "EUR" | "NGN" | "GHS" | "CAD" },
+) {
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: options?.currency ?? "USD",

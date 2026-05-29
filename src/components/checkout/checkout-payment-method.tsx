@@ -20,6 +20,7 @@ type CheckoutPaymentMethodProps = {
   cardCvvError?: string;
   bankCodeError?: string;
   payLabel: string;
+  isLoading?: boolean;
 };
 
 function PaymentMarks({ methodId }: { methodId: CheckoutPaymentMethodId }) {
@@ -50,6 +51,7 @@ export default function CheckoutPaymentMethod({
   cardCvvError,
   bankCodeError,
   payLabel,
+  isLoading,
 }: CheckoutPaymentMethodProps) {
   const showCardFields = selectedMethod === "card";
   const showBankFields = selectedMethod === "bank_transfer";
@@ -196,10 +198,11 @@ export default function CheckoutPaymentMethod({
 
         <button
           type="submit"
-          className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-md bg-[var(--accent-payment)] px-4 text-base font-semibold text-white shadow-sm transition-opacity hover:opacity-95"
+          disabled={isLoading}
+          className="mt-4 inline-flex h-12 w-full items-center justify-center rounded-md bg-[var(--accent-payment)] px-4 text-base font-semibold text-white shadow-sm transition-opacity hover:opacity-95 disabled:cursor-not-allowed disabled:opacity-70"
         >
           <Lock className="h-4 w-4" strokeWidth={1.8} />
-          <span className="ml-2">Pay {payLabel}</span>
+          <span className="ml-2">{isLoading ? "Processing payment" : `Pay ${payLabel}`}</span>
         </button>
 
         <button

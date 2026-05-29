@@ -162,6 +162,8 @@ agricultural tech, and fabrication components across multiple stores in a single
 - "Become a Rokswood Agent" CTA section on homepage and stores page
 - Apply Now / Contact Sales actions
 - Dedicated `/agents` application page with registration form and commission tiers
+- Agent registration form submits public applications to the backend for sysadmin
+  review and approval
 - Dedicated `/agents/login` page for approved agents to access the portal mockup
 - Static `/agents/dashboard` portal mockup for approved agents to preview storefront performance, wallet status, commissions, and activity
 
