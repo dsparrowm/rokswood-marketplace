@@ -18,8 +18,9 @@
 - `app/(commerce)/` — Cart (`/cart`) and Checkout (`/checkout`). Driven by Zustand cart store.
 - `app/agents/` — Become an Agent application page. Static marketing sections with
   backend-backed public registration submission through `/api/agent-requests`.
-- `app/agents/login/` — Agent portal login page. Frontend-only static shell with a
-  client form that validates dummy credentials and routes to the dashboard mockup.
+- `app/agents/login/` — Agent portal login page. Static shell with a client form
+  that authenticates and resets passwords through backend-backed local API routes
+  before routing to the dashboard mockup.
 - `app/agents/dashboard/` — Agent portal dashboard. Frontend-only static mock view
   for storefront performance, wallet status, commissions, and activity.
 - `app/track-order/` — Order tracking page. Frontend-only static lookup view for
@@ -64,7 +65,8 @@ Current implementation files live under `src/`, so these boundaries map to
   `AgentSalesPerformance`, `AgentWalletCard`, `AgentStorefrontCard`,
   `AgentCommissionsTable`, `AgentActivityCard`, and `AgentDashboardFooter`.
 - Agent login pages compose a reusable `AgentLoginPage` shell with the client
-  `AgentLoginForm` for React Hook Form/Zod validation and dummy credential routing.
+  `AgentLoginForm` for React Hook Form/Zod validation plus login, forgot-password,
+  and reset-password mutations.
 - Track order pages compose reusable presentational sections from typed tracking
   data: `TrackOrderLookupForm`, `TrackOrderResult`, and `TrackOrderTimeline`.
 
@@ -73,7 +75,7 @@ Current implementation files live under `src/`, so these boundaries map to
 - **Cart state (Zustand)**: Items keyed by product ID — `{ id, productId, productSlug, storeSlug, sku, name, description, price, quantity, image, imageAlt, category }`. Persisted to localStorage with seeded mock items on first load and grouped by store for display.
 - **Currency state (Zustand)**: Selected display currency (USD default). Exchange rate fetched from a public rates API.
 - **UI state (Zustand)**: Mobile menu open, filter sidebar open, active product tab.
-- **Server state (TanStack Query)**: Backend-backed stores, products, checkout metadata, and related API data should be cached, invalidated, and refetched through React Query hooks.
+- **Server state (TanStack Query)**: Backend-backed stores, products, checkout metadata, agent auth mutations, and related API data should be cached, invalidated, and refetched through React Query hooks.
 - **Form state (React Hook Form)**: Checkout form fields — shipping, billing, delivery method, payment method. Not persisted.
 
 ## Data Source
@@ -87,8 +89,10 @@ Current implementation files live under `src/`, so these boundaries map to
   specifications, resources, and procurement-page metadata.
 - Agent dashboard mock data lives in `src/lib/data/agent-dashboard.ts` and feeds
   the static `/agents/dashboard` portal route.
-- Agent login dummy credentials are colocated with `AgentLoginForm` because they are
-  v1-only frontend authentication data for the static portal mockup.
+- Agent login posts through local route handlers under `/api/agents/auth/*`, which
+  proxy the backend `/agents/auth/login`, `/agents/auth/forgot-password`, and
+  `/agents/auth/reset-password` endpoints without exposing the backend base URL to
+  the browser.
 - Track order mock shipment data lives in `src/lib/data/order-tracking.ts` and is
   used by the static `/track-order` lookup page.
 - Public agent registration posts to the backend `/public/agent-requests` endpoint

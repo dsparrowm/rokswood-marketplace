@@ -129,10 +129,11 @@ agricultural tech, and fabrication components across multiple stores in a single
 - Compact legal footer for the agent portal
 
 ### Agent Login (`/agents/login`)
-- Dedicated frontend-only portal login for approved Rokswood agents
-- Mobile-responsive split layout with brand panel, credential form, demo account helper, and trust indicators
-- Dummy email/password authentication redirects successful login attempts to `/agents/dashboard`
-- Failed dummy authentication shows an inline form-level error
+- Dedicated portal login for approved Rokswood agents
+- Mobile-responsive split layout with brand panel, credential form, password reset flow, and trust indicators
+- Agent email/password authentication posts to the backend `/agents/auth/login` endpoint
+- Forgot password initiates reset through `/agents/auth/forgot-password`
+- Password reset completes with email, token, and new password through `/agents/auth/reset-password`
 
 ### Track Order (`/track-order`)
 - Dedicated frontend-only order lookup page for enterprise buyers
@@ -164,7 +165,10 @@ agricultural tech, and fabrication components across multiple stores in a single
 - Dedicated `/agents` application page with registration form and commission tiers
 - Agent registration form submits public applications to the backend for sysadmin
   review and approval
-- Dedicated `/agents/login` page for approved agents to access the portal mockup
+- Dedicated `/agents/login` page for approved agents to authenticate and access the portal mockup
+- Agent login and password recovery are backend-backed through local API route
+  proxies for `/agents/auth/login`, `/agents/auth/forgot-password`, and
+  `/agents/auth/reset-password`
 - Static `/agents/dashboard` portal mockup for approved agents to preview storefront performance, wallet status, commissions, and activity
 
 ### Order Tracking

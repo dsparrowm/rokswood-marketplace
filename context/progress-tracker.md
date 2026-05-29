@@ -4,7 +4,7 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Agent registration backend integration implemented
+Agent login backend integration implemented
 
 ## Current Goal
 
@@ -122,6 +122,10 @@ Agent registration backend integration implemented
 - Added local API route `/api/agent-requests` that forwards public registration payloads to the backend `/public/agent-requests` endpoint
 - Updated the `/agents` registration form to submit backend-aligned request fields, use ISO country codes, show pending/error/success states, and reset after a successful submission
 - Moved React Query provider ownership to the root app layout and removed duplicate route-level providers from stores, store detail, checkout, and agents pages
+- Agent login request spec `19-agent-login.md` implemented for approved agent access
+- Added typed agent auth payload/response models and React Query mutations for login, forgot password, and reset password
+- Added local API route proxies for `/api/agents/auth/login`, `/api/agents/auth/forgot-password`, and `/api/agents/auth/reset-password`
+- Replaced dummy agent login credentials with backend-backed login submission and in-panel password reset flow
 
 ## In Progress
 
@@ -129,7 +133,7 @@ Agent registration backend integration implemented
 
 ## Next Up
 
-- Verify the deployed backend `/public/agent-requests` endpoint with a live registration submission
+- Verify the deployed backend `/agents/auth/login`, `/agents/auth/forgot-password`, and `/agents/auth/reset-password` endpoints with live approved-agent credentials
 
 ## Open Questions
 
@@ -158,7 +162,7 @@ Agent registration backend integration implemented
 - Agent Dashboard uses a dedicated portal shell rather than the public buyer navbar/footer because the reference image shows agent-specific chrome
 - Agent Dashboard remains frontend-only and static, with typed mock data feeding presentational components
 - Agent Login uses a dedicated portal shell rather than the public buyer navbar/footer to match approved-agent portal access
-- Agent Login keeps dummy credentials colocated with the form because no real auth boundary exists in the frontend-only v1
+- Agent Login uses local route handlers under `/api/agents/auth/*` to proxy the backend agent auth endpoints without exposing the backend base URL to the browser
 - Track Order uses static mock shipment data because v1 has no backend order lookup service
 - Store directory data now comes from the backend public stores API, with seed-store fallback entries removed from the public storefront
 - Agent registration uses a local public route handler plus React Query mutation instead of frontend-only validation state
@@ -196,3 +200,5 @@ Agent registration backend integration implemented
 - Agent registration integration verification passed with `pnpm exec tsc --noEmit --incremental false` and `pnpm lint`; lint still reports two pre-existing unused warnings in `src/lib/data/products.ts`
 - `pnpm build` initially failed because `/agents` used a React Query mutation without the route-level `QueryProvider`; wrapping `AgentPage` in `src/app/agents/page.tsx` fixed the prerender error, and `pnpm build` now passes
 - Root QueryProvider refactor verification passed with `pnpm exec tsc --noEmit --incremental false`, `pnpm lint`, and `pnpm build`; lint still reports two pre-existing unused warnings in `src/lib/data/products.ts`
+- Local backend inspection found the agent sales schema under `operations/agent-sales`, but the checked-out backend tree does not include an agent auth controller; the frontend targets the exact `/agents/auth/*` endpoint contract from `19-agent-login.md`.
+- Agent login integration verification passed with `pnpm exec tsc --noEmit --incremental false`, `pnpm lint`, and `pnpm build`; lint still reports the two pre-existing unused warnings in `src/lib/data/products.ts`.
