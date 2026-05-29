@@ -4,7 +4,7 @@ Update this file whenever the current phase, active faeture or implementation st
 
 ## Current Phase
 
-Agent login backend integration implemented
+Agent dashboard backend integration implemented
 
 ## Current Goal
 
@@ -126,6 +126,10 @@ Agent login backend integration implemented
 - Added typed agent auth payload/response models and React Query mutations for login, forgot password, and reset password
 - Added local API route proxies for `/api/agents/auth/login`, `/api/agents/auth/forgot-password`, and `/api/agents/auth/reset-password`
 - Replaced dummy agent login credentials with backend-backed login submission and in-panel password reset flow
+- Agent dashboard inspection spec `20-agent-dashboard-inspection.md` completed against the current marketplace dashboard UI and local `rokswood-hive-backend-api` checkout.
+- Current dashboard backend-backed candidates are present at schema level only: agent profile/status/KYC/agreement, store assignments, referral links, marketplace order attribution, commissions, ledger accounts, ledger entries, and withdrawal requests.
+- After pulling the latest backend `origin/staging`, the local backend now includes `AgentSalesModule`, `AgentAuthController`, and `AgentDashboardController` with the documented `/agents/*` dashboard endpoints.
+- `/agents/dashboard` is now wired against the local agent dashboard endpoints for authenticated profile, status, wallet, assignments, referrals, commissions, ledger, withdrawals, and saved bank details.
 
 ## In Progress
 
@@ -134,6 +138,7 @@ Agent login backend integration implemented
 ## Next Up
 
 - Verify the deployed backend `/agents/auth/login`, `/agents/auth/forgot-password`, and `/agents/auth/reset-password` endpoints with live approved-agent credentials
+- Add dedicated dashboard controls for referral-code editing, withdrawal submission, withdrawal history, and ledger history.
 
 ## Open Questions
 
@@ -160,7 +165,7 @@ Agent login backend integration implemented
 - Checkout sections are reusable presentational components that receive typed form and cart summary data via props
 - Become an Agent page uses static presentational sections plus a colocated client registration form for frontend-only validation
 - Agent Dashboard uses a dedicated portal shell rather than the public buyer navbar/footer because the reference image shows agent-specific chrome
-- Agent Dashboard remains frontend-only and static, with typed mock data feeding presentational components
+- Agent Dashboard reads backend-backed agent data through React Query and a local proxy, while unsupported analytics remain neutral/static.
 - Agent Login uses a dedicated portal shell rather than the public buyer navbar/footer to match approved-agent portal access
 - Agent Login uses local route handlers under `/api/agents/auth/*` to proxy the backend agent auth endpoints without exposing the backend base URL to the browser
 - Track Order uses static mock shipment data because v1 has no backend order lookup service
@@ -202,3 +207,11 @@ Agent login backend integration implemented
 - Root QueryProvider refactor verification passed with `pnpm exec tsc --noEmit --incremental false`, `pnpm lint`, and `pnpm build`; lint still reports two pre-existing unused warnings in `src/lib/data/products.ts`
 - Local backend inspection found the agent sales schema under `operations/agent-sales`, but the checked-out backend tree does not include an agent auth controller; the frontend targets the exact `/agents/auth/*` endpoint contract from `19-agent-login.md`.
 - Agent login integration verification passed with `pnpm exec tsc --noEmit --incremental false`, `pnpm lint`, and `pnpm build`; lint still reports the two pre-existing unused warnings in `src/lib/data/products.ts`.
+- Agent dashboard inspection found only agent-sales database entities in the local backend checkout. Implemented locally: `RHAgentRequest`, `RHAgent`, `RHAgentStoreAssignment`, `RHAgentReferralLink`, `RHMarketplaceOrderAttribution`, `RHAgentCommission`, `RHAgentLedgerAccount`, `RHAgentLedgerEntry`, and `RHAgentWithdrawalRequest` schemas plus relations/enums.
+- Backend `origin/staging` was pulled into the local backend checkout, adding `src/operations/agent-sales/agent-sales.module.ts`, `AgentAuthController`, `AgentDashboardController`, agent services, DTOs, guards, and wet tests.
+- The local backend now implements the documented dashboard endpoints: `GET /agents/referral-links`, `PATCH /agents/referral-links/{id}/code`, `GET /agents/assignments`, `GET /agents/balance`, `GET /agents/commissions`, `GET /agents/ledger`, `POST /agents/withdrawals`, `GET /agents/withdrawals`, and `GET /agents/withdrawals/bank-details`.
+- Agent dashboard backend data wiring implemented with a local `/api/agents/dashboard/[...path]` proxy, typed dashboard API models, and a React Query hook that fetches authenticated profile, referral links, assignments, balances, commissions, ledger entries, withdrawals, and saved bank details.
+- `/agents/dashboard` now reads the stored agent session token, requires sign-in when no token is available, and maps backend data into the existing presentational dashboard sections without moving fetch logic into leaf components.
+- Dashboard analytics that the backend does not expose yet remain neutral/static: sales chart shape, storefront visitors, conversion rate, and report export.
+- Agent dashboard backend wiring verification passed with `pnpm exec tsc --noEmit --incremental false` and `pnpm lint`; lint still reports the two pre-existing unused warnings in `src/lib/data/products.ts`.
+- Local dev server verification was attempted with `pnpm dev`, but sandbox localhost binding failed with `listen EPERM 0.0.0.0:3000`; escalation to start the dev server was rejected.

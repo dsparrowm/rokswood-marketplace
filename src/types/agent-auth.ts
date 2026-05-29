@@ -20,9 +20,20 @@ export type AgentAuthAccess = {
   expiresTimestamp?: number;
 };
 
+export type AgentAuthProfile = {
+  id: string;
+  fullName?: string;
+  email?: string;
+  status?: string;
+  kycStatus?: string;
+  agreementVerified?: boolean;
+};
+
 export type AgentAuthSession = {
+  accessToken?: string;
+  expiresAt?: string;
   access?: AgentAuthAccess;
-  agent?: unknown;
+  agent?: AgentAuthProfile;
   user?: unknown;
   profile?: unknown;
 };
